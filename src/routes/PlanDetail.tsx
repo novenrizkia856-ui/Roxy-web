@@ -203,8 +203,17 @@ export function PlanDetail() {
                     <td className="numeric py-3 pr-4 text-[0.88rem]">
                       {formatAmount(e.amountOut - e.protocolFee, stockDecimals, 6)}
                     </td>
+                    {/* Divided by what the owner actually received, net of the protocol fee -
+                        the same basis as the Received column beside it and as the average
+                        above. Dividing by the gross swap output would quote a better price
+                        than anyone got, and would not reconcile with the average. */}
                     <td className="numeric py-3 pr-4 text-[0.88rem]">
-                      {effectivePrice(e.amountIn, stableDecimals, e.amountOut, stockDecimals)}
+                      {effectivePrice(
+                        e.amountIn,
+                        stableDecimals,
+                        e.amountOut - e.protocolFee,
+                        stockDecimals,
+                      )}
                     </td>
                     <td className="numeric py-3 pr-4 text-[0.82rem]">
                       <a
