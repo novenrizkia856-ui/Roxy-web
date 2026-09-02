@@ -1,3 +1,7 @@
+// Must be first: when enabled it installs a provider before wagmi's config is evaluated and
+// starts discovering wallets. Compiles to nothing in a production build.
+import './lib/devWallet'
+
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'

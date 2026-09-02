@@ -139,6 +139,58 @@ Both were forced by current package versions and are recorded rather than hidden
    tokens the brief asked for live in the `@theme` block of `src/styles/index.css`. The
    requirement — custom tokens rather than the stock palette — is met; only the file differs.
 
+## Local development against a throwaway chain
+
+The write paths — approve, `createPlan`, `cancel` — can only be exercised through a wallet, so
+they are easy to leave untested. This setup runs the whole flow against a local chain without a
+browser extension.
+
+**1. Start a local node and deploy the mock stack:**
+
+```bash
+anvil --chain-id 31337 --port 8545 --block-time 2
+```
+
+Then, in the contracts repo:
+
+```bash
+PRIVATE_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 forge script script/DeployTestnet.s.sol --rpc-url http://127.0.0.1:8545 --broadcast
+```
+
+That key is Anvil's well-known first dev account. The script writes
+`deployments/local-<chainid>.json`, so a local run cannot overwrite the record of what is live
+on the public testnet. The deployment mints 1,000,000 mUSDG to the deployer.
+
+**2. Point `.env` at it**, using the addresses the script printed:
+
+```
+VITE_CHAIN_ID=31337
+VITE_RPC_URL=http://127.0.0.1:8545
+VITE_RECUR_CONTRACT_ADDRESS=<recur>
+VITE_STOCK_TOKEN_ADDRESS=<mNVDA>
+VITE_DEV_WALLET=true
+```
+
+`VITE_STOCK_TOKEN_ADDRESS` overrides the built-in candidate list, because a throwaway chain gets
+fresh addresses on every deploy. `VITE_DEV_WALLET` enables `src/lib/devWallet.ts`.
+
+**3. `npm run dev`** and the app connects on its own.
+
+### About the dev wallet
+
+`src/lib/devWallet.ts` installs an EIP-1193 provider that forwards to the local node and
+announces itself over EIP-6963, so wagmi discovers it like any extension.
+
+It holds **no private key and cannot sign anything.** Transactions go out as
+`eth_sendTransaction` from an account the node itself has unlocked — something only a
+development node does. Pointed at a real network it would simply fail.
+
+It is double-guarded by `import.meta.env.DEV` *and* an explicit `VITE_DEV_WALLET=true`. Because
+`DEV` is statically false in a production build, Vite drops the module entirely: after
+`npm run build`, none of its markers (`isDevWallet`, `Anvil Dev Wallet`, `dev.local.anvil`)
+appear anywhere in `dist/`. Worth re-checking with `grep -r isDevWallet dist/` if the build
+setup ever changes.
+
 ## Deploying to Vercel
 
 The build is static, so the framework preset "Vite" works with no extra configuration.

@@ -45,7 +45,29 @@ const TESTNET_TOKENS: StockTokenMeta[] = [
   },
 ]
 
-export const STOCK_TOKENS: StockTokenMeta[] = CHAIN_ID === 4663 ? MAINNET_TOKENS : TESTNET_TOKENS
+/**
+ * Local-development override. A throwaway chain gets fresh addresses on every deploy, so they
+ * cannot be hardcoded here; point this at whatever `DeployTestnet.s.sol` just produced.
+ * Ignored unless set, so it cannot affect a real build.
+ */
+const ENV_STOCK_TOKEN = import.meta.env.VITE_STOCK_TOKEN_ADDRESS as Address | undefined
+
+const LOCAL_TOKENS: StockTokenMeta[] = ENV_STOCK_TOKEN
+  ? [
+      {
+        address: ENV_STOCK_TOKEN,
+        symbol: 'mNVDA',
+        name: 'Mock NVIDIA',
+        note: 'Local development stack. Not a real Stock Token.',
+      },
+    ]
+  : []
+
+export const STOCK_TOKENS: StockTokenMeta[] = ENV_STOCK_TOKEN
+  ? LOCAL_TOKENS
+  : CHAIN_ID === 4663
+    ? MAINNET_TOKENS
+    : TESTNET_TOKENS
 
 /** True when this build is pointed at the mock testnet stack rather than real assets. */
 export const IS_TESTNET = CHAIN_ID !== 4663
