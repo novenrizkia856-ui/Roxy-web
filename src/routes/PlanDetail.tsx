@@ -48,7 +48,7 @@ export function PlanDetail() {
   if (!plan || plan.owner === '0x0000000000000000000000000000000000000000') {
     return (
       <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
-        <h1 className="font-display text-[1.6rem]">No plan {planId}</h1>
+        <h1 className="display text-[1.2rem]">No plan {planId}</h1>
         <p className="mt-2 text-[0.95rem] text-ink-soft">
           Nothing has been recorded under that id.
         </p>
@@ -77,7 +77,7 @@ export function PlanDetail() {
           <ProgressRing progress={cycleProgress(plan, now)} due={due} size={56} strokeWidth={3} />
           <div>
             <p className="label">Plan {plan.id.toString()}</p>
-            <h1 className="mt-1.5 font-display text-[2.1rem] leading-none tracking-[-0.015em]">
+            <h1 className="mt-1.5 display text-[1.4rem] leading-none">
               {meta?.name ?? 'Stock Token'}{' '}
               <span className="numeric text-[1.2rem] text-ink-muted">
                 {meta?.symbol ?? shortAddress(plan.stockToken)}
@@ -124,7 +124,7 @@ export function PlanDetail() {
       {/* Totals */}
       <div className="grid grid-cols-1 gap-8 py-10 lg:grid-cols-12">
         <div className="lg:col-span-4">
-          <h2 className="font-display text-[1.5rem] leading-tight">Position</h2>
+          <h2 className="display text-[1.15rem]">Position</h2>
           <p className="mt-2 max-w-xs text-[0.9rem] leading-relaxed text-ink-soft">
             Totalled from on-chain execution events, net of the protocol fee.
           </p>
@@ -162,7 +162,7 @@ export function PlanDetail() {
       {/* History */}
       <section className="border-t border-rule pt-10">
         <div className="flex items-baseline justify-between">
-          <h2 className="font-display text-[1.5rem] leading-tight">Execution history</h2>
+          <h2 className="display text-[1.15rem]">Execution history</h2>
           <span className="label">{count} total</span>
         </div>
 

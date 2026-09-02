@@ -1,5 +1,8 @@
+import { useEffect, useState } from 'react'
 import { NavLink, Outlet, Link } from 'react-router-dom'
+import { CHAIN_ID } from '../config/chains'
 import { isDeployed } from '../config/contract'
+import { IS_TESTNET } from '../config/tokens'
 import { WalletButton } from './WalletButton'
 
 /** The wordmark's dial glyph, echoing the progress rings used throughout the app. */
@@ -18,9 +21,29 @@ function Mark() {
   )
 }
 
+/**
+ * UTC clock in the system bar.
+ *
+ * Not ornament. Every plan in Recur is a deadline, every countdown on these pages is measured
+ * against a wall clock, and "when is it due" is the product's only real question - so the
+ * interface states which clock it is answering with.
+ */
+function Clock() {
+  const [t, setT] = useState(() => new Date())
+  useEffect(() => {
+    const id = setInterval(() => setT(new Date()), 1000)
+    return () => clearInterval(id)
+  }, [])
+  return (
+    <span className="numeric text-[0.65rem] text-ink-muted">
+      {t.toISOString().slice(11, 19)} UTC
+    </span>
+  )
+}
+
 function navClass({ isActive }: { isActive: boolean }) {
   return [
-    'label !text-[0.7rem] transition-colors',
+    'label !text-[0.6875rem] transition-colors',
     isActive ? '!text-accent' : 'hover:!text-ink',
   ].join(' ')
 }
@@ -28,8 +51,28 @@ function navClass({ isActive }: { isActive: boolean }) {
 export function Layout() {
   return (
     <div className="flex min-h-dvh flex-col">
+      {/* System bar: what network, what state, what time. The interface says where it stands
+          before it says anything else. */}
+      <div className="border-b border-rule">
+        <div className="mx-auto flex max-w-6xl items-center gap-4 px-5 py-2 sm:px-8">
+          <span className="label !text-ink-faint">//</span>
+          <span className="label">Recur.Protocol</span>
+          <span className="label !text-ink-faint hidden sm:inline">
+            Net.Robinhood · {CHAIN_ID}
+          </span>
+          {IS_TESTNET && <span className="label !text-caution">Testnet</span>}
+          <div className="ml-auto flex items-center gap-3">
+            <span className="pip" data-on={isDeployed ? 'true' : 'false'} aria-hidden />
+            <span className="label hidden sm:inline">
+              {isDeployed ? 'System.Active' : 'Unconfigured'}
+            </span>
+            <Clock />
+          </div>
+        </div>
+      </div>
+
       {!isDeployed && (
-        <div className="border-b border-caution/30 bg-caution-wash px-5 py-2 text-center">
+        <div className="border-b border-caution/25 bg-caution-wash px-5 py-2 text-center">
           <p className="text-[0.85rem] text-ink-soft">
             <span className="label !text-caution">Not configured</span>{' '}
             <span className="ml-2">
@@ -42,13 +85,9 @@ export function Layout() {
 
       <header className="border-b border-rule">
         <div className="mx-auto flex max-w-6xl items-center gap-6 px-5 py-4 sm:px-8">
-          <Link to="/" className="flex items-baseline gap-2.5" aria-label="Recur, home">
-            <span className="translate-y-[3px]">
-              <Mark />
-            </span>
-            <span className="font-display text-[1.35rem] leading-none font-medium tracking-tight">
-              Recur
-            </span>
+          <Link to="/" className="flex items-center gap-2.5" aria-label="Recur, home">
+            <Mark />
+            <span className="display text-[1.15rem] leading-none tracking-[0.18em]">Recur</span>
           </Link>
 
           <nav className="ml-auto flex items-center gap-5 sm:gap-7">

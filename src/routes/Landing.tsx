@@ -5,19 +5,19 @@ import { ProgressRing } from '../components/ProgressRing'
 function Specimen() {
   return (
     <div className="panel overflow-hidden">
-      <div className="flex items-baseline justify-between border-b border-rule px-4 py-2.5">
+      <div className="flex items-center justify-between border-b border-rule px-4 py-2.5">
         <span className="label">Plan 004</span>
-        <span className="label !text-positive">Active</span>
+        <span className="flex items-center gap-2">
+          <span className="pip" data-on="true" aria-hidden />
+          <span className="label !text-positive">Active</span>
+        </span>
       </div>
 
       <div className="flex items-center gap-4 px-4 py-4">
         <ProgressRing progress={0.72} label="72% through the current interval" />
         <div className="min-w-0">
-          <p className="font-display text-[1.05rem] leading-tight">
-            NVIDIA <span className="text-ink-faint">·</span>{' '}
-            <span className="numeric text-[0.95rem]">NVDA</span>
-          </p>
-          <p className="numeric text-[0.78rem] text-ink-muted">Every 7 days</p>
+          <p className="display text-[0.95rem] leading-tight">NVIDIA</p>
+          <p className="numeric text-[0.75rem] text-ink-muted">NVDA · every 7 days</p>
         </div>
         <div className="ml-auto text-right">
           <p className="label">Next buy</p>
@@ -43,12 +43,27 @@ function Specimen() {
   )
 }
 
+/** Section marker: a name and its place in the sequence, so the page reads as an instrument
+ *  panel rather than a scroll. */
+function Marker({ name, index, of }: { name: string; index: number; of: number }) {
+  return (
+    <div className="flex items-baseline justify-between border-b border-rule pb-3">
+      <span className="marker">{name}</span>
+      <span className="numeric text-[0.65rem] text-ink-faint">
+        {String(index).padStart(2, '0')} / {String(of).padStart(2, '0')}
+      </span>
+    </div>
+  )
+}
+
 function Step({ n, title, children }: { n: string; title: string; children: React.ReactNode }) {
   return (
-    <div className="border-t border-rule pt-5">
-      <span className="numeric text-[0.8rem] font-medium text-accent">{n}</span>
-      <h3 className="mt-2 font-display text-[1.3rem] leading-snug">{title}</h3>
-      <p className="mt-2 text-[0.95rem] leading-relaxed text-ink-soft">{children}</p>
+    <div className="border-t border-rule pt-4">
+      <div className="flex items-baseline gap-3">
+        <span className="numeric text-[0.72rem] text-accent">{n}</span>
+        <h3 className="display text-[0.95rem]">{title}</h3>
+      </div>
+      <p className="mt-2.5 text-[0.95rem] leading-relaxed text-ink-soft">{children}</p>
     </div>
   )
 }
@@ -56,19 +71,23 @@ function Step({ n, title, children }: { n: string; title: string; children: Reac
 export function Landing() {
   return (
     <div className="mx-auto max-w-6xl px-5 sm:px-8">
-      {/* ---- Hero: deliberately asymmetric, 7 columns of type against 5 of data ---- */}
-      <section className="grid grid-cols-1 gap-12 pt-16 pb-20 lg:grid-cols-12 lg:gap-10 lg:pt-24">
+      {/* ---- Hero: asymmetric, 7 columns of type against 5 of data ---- */}
+      <section className="grid grid-cols-1 gap-12 pt-14 pb-20 lg:grid-cols-12 lg:gap-10 lg:pt-20">
         <div className="rise lg:col-span-7">
-          <p className="label">Robinhood Chain · Non-custodial</p>
+          <span className="marker">Non-custodial scheduler</span>
 
-          <h1 className="mt-5 font-display text-[2.7rem] leading-[1.08] font-normal tracking-[-0.02em] text-balance sm:text-[3.4rem]">
+          {/* Machine voice: the claim, set in mono and tracked wide so it reads as a headline
+              rather than as code. */}
+          <h1 className="display mt-6 text-[1.75rem] text-balance sm:text-[2.3rem]">
             Buy the same amount,
             <br />
             on the same day,
-            <span className="text-accent"> without being there.</span>
+            <br />
+            <span className="text-accent">without being there.</span>
           </h1>
 
-          <p className="mt-6 max-w-xl text-[1.05rem] leading-relaxed text-ink-soft">
+          {/* Human voice: every sentence of prose stays in the serif. */}
+          <p className="prose-serif mt-7 max-w-xl text-[1.05rem] leading-relaxed text-ink-soft">
             Recur schedules recurring purchases of Stock Tokens. You approve your stablecoin once
             and set the terms. When a plan comes due, anyone can trigger it — and they are paid a
             small tip for the gas. Your money never sits in the contract.
@@ -92,7 +111,7 @@ export function Landing() {
         </div>
       </section>
 
-      {/* ---- Key figures: a ruled statement row, columns intentionally unequal ---- */}
+      {/* ---- Key figures: a ruled instrument row, columns intentionally unequal ---- */}
       <section className="grid grid-cols-2 border-y border-rule sm:grid-cols-4">
         {[
           { k: 'Protocol fee', v: '0.50%', n: 'Capped at 0.75% in code' },
@@ -107,7 +126,7 @@ export function Landing() {
             } ${i < 2 ? 'border-b border-rule sm:border-b-0' : ''}`}
           >
             <p className="label">{item.k}</p>
-            <p className="numeric mt-1.5 text-[1.5rem] leading-none">{item.v}</p>
+            <p className="numeric mt-2 text-[1.5rem] leading-none">{item.v}</p>
             <p className="mt-2 text-[0.82rem] leading-snug text-ink-muted">{item.n}</p>
           </div>
         ))}
@@ -115,18 +134,18 @@ export function Landing() {
 
       {/* ---- How it works: staggered, not a three-up card grid ---- */}
       <section className="py-20">
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
+        <Marker name="Process" index={1} of={2} />
+
+        <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-12">
           <div className="lg:col-span-4">
-            <h2 className="font-display text-[2rem] leading-tight tracking-[-0.015em]">
-              Three steps, then it runs itself.
-            </h2>
-            <p className="mt-4 max-w-sm text-[0.95rem] leading-relaxed text-ink-soft">
+            <h2 className="display text-[1.25rem]">Three steps, then it runs itself</h2>
+            <p className="prose-serif mt-4 max-w-sm text-[0.95rem] leading-relaxed text-ink-soft">
               There is no subscription and no account. The schedule lives in a contract you can
               read, and you can revoke it at any moment.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:col-span-7 lg:col-start-6">
+          <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:col-span-7 lg:col-start-6">
             <Step n="01" title="Approve once">
               Give the contract permission to spend your stablecoin. This is a normal ERC-20
               approval and you can revoke it whenever you like.
@@ -149,16 +168,17 @@ export function Landing() {
 
       {/* ---- Custody: the claim that matters most, given its own space ---- */}
       <section className="border-t border-rule py-20">
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
+        <Marker name="Custody" index={2} of={2} />
+
+        <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-12">
           <div className="lg:col-span-5">
-            <p className="label">What non-custodial actually means here</p>
-            <blockquote className="mt-5 border-l-2 border-accent pl-5 font-display text-[1.5rem] leading-snug tracking-[-0.01em]">
+            <blockquote className="prose-serif border-l-2 border-accent pl-5 text-[1.4rem] leading-snug">
               Every purchase is one transaction: pull, swap, deliver. If any part fails, none of
               it happened.
             </blockquote>
           </div>
 
-          <div className="space-y-5 text-[0.95rem] leading-relaxed text-ink-soft lg:col-span-6 lg:col-start-7">
+          <div className="prose-serif space-y-5 text-[0.95rem] leading-relaxed text-ink-soft lg:col-span-6 lg:col-start-7">
             <p>
               Recur holds no deposits. There is no balance to withdraw, because there is never a
               balance — the contract has no function that could sweep one, and its token balance

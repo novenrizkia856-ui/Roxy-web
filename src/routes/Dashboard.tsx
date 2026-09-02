@@ -60,7 +60,7 @@ function PlanRow({
         <ProgressRing progress={progress} due={due} />
 
         <div className="min-w-0">
-          <h3 className="font-display text-[1.15rem] leading-tight">
+          <h3 className="display text-[0.95rem] leading-tight">
             <Link to={`/plan/${plan.id}`} className="hover:text-accent">
               {meta?.name ?? 'Stock Token'}{' '}
               <span className="numeric text-[0.95rem] text-ink-muted">
@@ -155,7 +155,7 @@ export function Dashboard() {
       <div className="flex flex-wrap items-end justify-between gap-4 border-b border-rule pb-6">
         <div>
           <p className="label">Your plans</p>
-          <h1 className="mt-2 font-display text-[2.2rem] leading-none tracking-[-0.015em]">
+          <h1 className="mt-2 display text-[1.5rem] leading-none">
             Schedule
           </h1>
         </div>
@@ -170,7 +170,7 @@ export function Dashboard() {
         </p>
       ) : !isConnected ? (
         <div className="mt-14 max-w-md">
-          <h2 className="font-display text-[1.5rem] leading-snug">Connect to see your plans</h2>
+          <h2 className="display text-[1.15rem] leading-snug">Connect to see your plans</h2>
           <p className="mt-3 text-[0.95rem] leading-relaxed text-ink-soft">
             Plans are stored on-chain against your address. Connecting only reads them — nothing
             is signed until you create or cancel one.
@@ -183,7 +183,7 @@ export function Dashboard() {
         <p className="numeric mt-10 text-[0.85rem] text-ink-muted">Reading plans…</p>
       ) : plans.length === 0 ? (
         <div className="mt-14 max-w-md">
-          <h2 className="font-display text-[1.5rem] leading-snug">No plans yet</h2>
+          <h2 className="display text-[1.15rem] leading-snug">No plans yet</h2>
           <p className="mt-3 text-[0.95rem] leading-relaxed text-ink-soft">
             A plan is four decisions: which token, how much per cycle, how often, and the worst
             price you would accept.

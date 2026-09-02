@@ -4,7 +4,7 @@ function Clause({ title, children }: { title: string; children: React.ReactNode 
   return (
     <section className="border-t border-rule py-7">
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
-        <h2 className="font-display text-[1.25rem] leading-snug lg:col-span-4">{title}</h2>
+        <h2 className="display text-[0.95rem] leading-snug lg:col-span-4">{title}</h2>
         <div className="space-y-3 text-[0.95rem] leading-relaxed text-ink-soft lg:col-span-7 lg:col-start-6">
           {children}
         </div>
@@ -18,7 +18,7 @@ export function Legal() {
     <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8">
       <div className="border-b border-rule pb-7">
         <p className="label">Disclosures</p>
-        <h1 className="mt-2 max-w-2xl font-display text-[2.4rem] leading-[1.1] tracking-[-0.02em]">
+        <h1 className="mt-2 max-w-2xl font-serif text-[2.1rem] leading-[1.12]">
           What you are agreeing to, in plain terms.
         </h1>
       </div>

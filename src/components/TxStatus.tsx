@@ -32,7 +32,7 @@ export function TxStatus({ phase, hash, error, action }: TxStatusProps) {
       ? 'border-accent/40 bg-accent-wash'
       : phase === 'success'
         ? 'border-positive/30 bg-positive-wash'
-        : 'border-rule bg-paper-sunken'
+        : 'border-rule bg-ground-sunken'
 
   return (
     <div className={`mt-4 rounded-xs border px-3.5 py-3 ${tone}`} role="status" aria-live="polite">

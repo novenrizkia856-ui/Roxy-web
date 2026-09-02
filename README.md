@@ -10,8 +10,8 @@ Stock Tokens. Vite + React + wagmi, built to a **fully static** `dist/`.
 | Build | ✅ `npm run build` produces a static `dist/` — no Node runtime needed to serve it |
 | Typecheck | ✅ clean |
 | Screens | Landing · Dashboard · Create plan · Plan detail · Legal (+ wallet connect) |
-| Contract wired | ⏳ needs `VITE_RECUR_CONTRACT_ADDRESS`; runs read-only and says so until then |
-| Deployed | ❌ not yet |
+| Contract wired | ✅ verified against the testnet deployment; runs read-only if no address is set |
+| Hosted | ❌ not deployed to Vercel yet |
 
 ## Quick start
 
@@ -33,29 +33,52 @@ npm run build && npm run preview
 
 ## Design
 
-The brief asked for something that reads as a considered financial instrument rather than a
-generic dashboard, so the interface is built around a specific idea: **a printed brokerage
-statement crossed with a modern product page.**
+The interface is built around one idea: **a financial terminal that still sets its prose in a
+serif.** Two voices, and the split is the whole system.
 
-What that means concretely, and what it rules out:
+- **The machine voice is monospace** — headlines, figures, labels, controls, all-caps and widely
+  tracked. This is the part that reads as an instrument: schedules, countdowns, addresses,
+  amounts, anything the contract decides.
+- **The human voice is a serif** — every sentence of running prose, and the stepper's questions,
+  because those are addressed to a person. This is what stops the page becoming a console
+  readout.
 
-- **Paper, not white.** `#f6f4ef`, with near-black `#1c1a17` type rather than `#000`.
-- **One accent, used sparingly.** An oxblood red taken from the red ink of a ledger. It marks
-  the primary action and figures that carry meaning — never decoration, and never a gradient.
-  Chosen partly because the default web3 indigo/violet is exactly the look being avoided.
-- **Two typefaces.** Newsreader, a text serif, for prose and headings; IBM Plex Mono for every
-  figure, label and control. All numerals are tabular, so columns align and a live countdown
-  does not make the layout twitch.
-- **Rules, not shadows.** There is no `box-shadow` anywhere. Panels are separated by hairlines,
-  the way a document is ruled. Radii are 2–3px; nothing is a pill and nothing is `rounded-2xl`.
+Everything else follows from that:
+
+- **Warm near-black, not `#000`.** `#0e0d0b` ground with `#ede9e1` type. The warmth is what keeps
+  it from reading as generic dark mode — it is the earlier paper palette inverted rather than
+  replaced.
+- **One accent.** The same oxblood red, opened to `#d9573a` so it holds on a dark ground. Marks
+  the primary action and figures that carry meaning; never decoration, never a gradient. Still
+  nothing like the cyan or violet that dark web3 interfaces default to.
+- **A survey grid, not a texture.** Two layers — a 22px dot lattice and a 132px ruled square —
+  both barely above the ground, so the page reads as drawn on graph paper.
+- **Technical annotation.** A system bar states network, status and a live UTC clock; sections
+  carry an index (`01 / 02`); status pips replace prose for binary state. The clock is not
+  ornament: every plan is a deadline and every countdown is measured against a wall clock, so
+  the interface says which clock it is answering with.
+- **Rules, not shadows.** No `box-shadow` anywhere. Hairlines at 13% and 30% opacity carry the
+  layout. Radii cap at 2px; nothing is a pill and nothing is `rounded-2xl`.
 - **Asymmetric grids.** 7/5 in the hero, 4/7 in the explainer, 3/8 in the stepper. No section is
   an even three-up card grid.
-- **Numbers are drawn, not just printed.** Progress toward the next execution is a small dial,
-  read at a glance, rather than a percentage the reader has to interpret.
+- **Numbers are drawn.** Progress toward the next execution is a dial, read at a glance, rather
+  than a percentage the reader has to interpret.
 - **Motion is brief.** One 380ms rise on entry, and `prefers-reduced-motion` is honoured.
 
-There is no dark mode. The paper palette is a deliberate single commitment rather than an
-oversight.
+There is no light mode. The dark palette is a single deliberate commitment; the tokens are named
+by role (`ground`, `ink`, `rule`, `accent`) so a light variant would only need new values.
+
+### On the reference
+
+This direction was developed after studying `app.genoromus.com` at the client's request. What
+was taken is structural vocabulary — a dark ground with a survey grid, mono-dominant all-caps
+display type, section indices, status pips, hairline rules, sharp corners. What was **not**
+taken is its expression: no source code, markup, assets or copy were copied, and its cyan
+palette and sans-serif secondary face were deliberately not adopted.
+
+The serif is the deliberate divergence. That reference pairs its monospace with a neutral sans;
+pairing it with a text serif is something a terminal aesthetic does not do, and it is what keeps
+Recur reading as a financial instrument rather than a developer console.
 
 ## Structure
 

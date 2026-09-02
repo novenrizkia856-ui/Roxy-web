@@ -51,7 +51,7 @@ function StepRail({ current, onJump }: { current: number; onJump: (i: number) =>
                 {String(i + 1).padStart(2, '0')}
               </span>
               <span
-                className={`font-display text-[1rem] ${
+                className={`display text-[0.85rem] ${
                   active ? 'text-ink' : done ? 'text-ink-soft' : 'text-ink-faint'
                 }`}
               >
@@ -137,7 +137,10 @@ export function CreatePlan() {
 
   const canAdvance =
     (step === 0 && Boolean(asset)) ||
-    (step === 1 && amountValid && !insufficientBalance) ||
+    // A balance shortfall warns but does not block: the contract will happily record a plan
+    // you cannot yet fund, and execution simply reverts until you top up. Blocking here
+    // would also contradict the message this step shows.
+    (step === 1 && amountValid) ||
     (step === 2 && intervalSeconds >= 3600) ||
     (step === 3 && slippageBps >= 0 && slippageBps <= MAX_SLIPPAGE_BPS)
 
@@ -146,7 +149,7 @@ export function CreatePlan() {
       <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
         <div className="max-w-md">
           <p className="label">New plan</p>
-          <h1 className="mt-3 font-display text-[2rem] leading-tight">Connect first</h1>
+          <h1 className="mt-3 display text-[1.4rem]">Connect first</h1>
           <p className="mt-3 text-[0.95rem] leading-relaxed text-ink-soft">
             A plan is stored on-chain against your address, so you need a wallet before you can
             create one. Nothing is signed until the final step.
@@ -163,7 +166,7 @@ export function CreatePlan() {
     <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8">
       <div className="border-b border-rule pb-6">
         <p className="label">New plan</p>
-        <h1 className="mt-2 font-display text-[2.2rem] leading-none tracking-[-0.015em]">
+        <h1 className="mt-2 display text-[1.5rem] leading-none">
           Set the terms
         </h1>
       </div>
@@ -177,7 +180,7 @@ export function CreatePlan() {
           {/* -------------------------------------------------- 1. Asset */}
           {step === 0 && (
             <section className="rise">
-              <h2 className="font-display text-[1.6rem] leading-snug">Which Stock Token?</h2>
+              <h2 className="font-serif text-[1.55rem] leading-snug">Which Stock Token?</h2>
               <p className="mt-2 max-w-lg text-[0.95rem] leading-relaxed text-ink-soft">
                 Only assets registered by the protocol can be scheduled. That restriction exists
                 because this chain hosts many counterfeit tokens reusing real tickers.
@@ -193,7 +196,7 @@ export function CreatePlan() {
                     className="choice block w-full"
                   >
                     <span className="flex items-baseline gap-2">
-                      <span className="font-display text-[1.1rem]">{t.name}</span>
+                      <span className="display text-[0.9rem]">{t.name}</span>
                       <span className="numeric text-[0.85rem] text-ink-muted">{t.symbol}</span>
                       {tokenCfg.enabled && asset?.address === t.address && (
                         <span className="label ml-auto !text-positive">Registered</span>
@@ -221,7 +224,7 @@ export function CreatePlan() {
           {/* -------------------------------------------------- 2. Amount */}
           {step === 1 && (
             <section className="rise">
-              <h2 className="font-display text-[1.6rem] leading-snug">How much per cycle?</h2>
+              <h2 className="font-serif text-[1.55rem] leading-snug">How much per cycle?</h2>
               <p className="mt-2 max-w-lg text-[0.95rem] leading-relaxed text-ink-soft">
                 This exact amount is pulled from your wallet each time the plan runs. It is never
                 pulled early and never more than once per interval.
@@ -260,7 +263,7 @@ export function CreatePlan() {
           {/* -------------------------------------------------- 3. Cadence */}
           {step === 2 && (
             <section className="rise">
-              <h2 className="font-display text-[1.6rem] leading-snug">How often?</h2>
+              <h2 className="font-serif text-[1.55rem] leading-snug">How often?</h2>
               <p className="mt-2 max-w-lg text-[0.95rem] leading-relaxed text-ink-soft">
                 The clock starts when the plan is first executed. The contract enforces a minimum
                 of one hour between purchases.
@@ -275,7 +278,7 @@ export function CreatePlan() {
                     onClick={() => setIntervalSeconds(opt.seconds)}
                     className="choice text-center"
                   >
-                    <span className="font-display text-[1rem]">{opt.label}</span>
+                    <span className="display text-[0.85rem]">{opt.label}</span>
                   </button>
                 ))}
               </div>
@@ -304,7 +307,7 @@ export function CreatePlan() {
           {/* -------------------------------------------------- 4. Slippage */}
           {step === 3 && (
             <section className="rise">
-              <h2 className="font-display text-[1.6rem] leading-snug">
+              <h2 className="font-serif text-[1.55rem] leading-snug">
                 What is the worst price you would accept?
               </h2>
               <p className="mt-2 max-w-lg text-[0.95rem] leading-relaxed text-ink-soft">
@@ -346,7 +349,7 @@ export function CreatePlan() {
           {/* -------------------------------------------------- 5. Review */}
           {step === 4 && (
             <section className="rise">
-              <h2 className="font-display text-[1.6rem] leading-snug">Review</h2>
+              <h2 className="font-serif text-[1.55rem] leading-snug">Review</h2>
 
               <dl className="mt-6 panel divide-y divide-rule">
                 {[
@@ -364,7 +367,7 @@ export function CreatePlan() {
 
               {/* Approval */}
               <div className="mt-8">
-                <h3 className="font-display text-[1.2rem]">
+                <h3 className="display text-[0.95rem]">
                   {needsApproval ? 'Step 1 · Approve' : 'Allowance in place'}
                 </h3>
 
@@ -442,7 +445,7 @@ export function CreatePlan() {
 
               {/* Create */}
               <div className="mt-8 border-t border-rule pt-6">
-                <h3 className="font-display text-[1.2rem]">Step 2 · Create the plan</h3>
+                <h3 className="display text-[0.95rem]">Step 2 · Create the plan</h3>
                 <p className="mt-2 max-w-lg text-[0.9rem] leading-relaxed text-ink-soft">
                   This records the schedule on-chain. The first purchase becomes available
                   immediately.
