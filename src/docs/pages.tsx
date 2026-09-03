@@ -95,10 +95,10 @@ export const DOC_PAGES: DocPage[] = [
         heading: 'Lifecycle',
         body: (
           <>
-            <Pre>{`approve(stablecoin)      you, once
-createPlan(...)          you, once
-execute(planId)          anyone, every interval
-cancel(planId)           you, whenever`}</Pre>
+            <Pre>{`approve()     you, once
+createPlan()  you, once
+execute()     anyone, each interval
+cancel()      you, whenever`}</Pre>
             <p className="mt-4">
               Only the first two need you. After that the plan runs on its own, as long as
               somebody calls <C>execute</C>.

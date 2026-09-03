@@ -151,7 +151,7 @@ export function CreatePlan() {
           <p className="label">New plan</p>
           <h1 className="mt-3 display text-[1.4rem]">Connect first</h1>
           <p className="mt-3 text-[0.95rem] leading-relaxed text-ink-soft">
-            A plan is stored on-chain against your address, so you need a wallet before you can
+            A plan is stored on chain against your address, so you need a wallet before you can
             create one. Nothing is signed until the final step.
           </p>
           <div className="mt-6">
@@ -447,7 +447,7 @@ export function CreatePlan() {
               <div className="mt-8 border-t border-rule pt-6">
                 <h3 className="display text-[0.95rem]">Step 2 · Create the plan</h3>
                 <p className="mt-2 max-w-lg text-[0.9rem] leading-relaxed text-ink-soft">
-                  This records the schedule on-chain. The first purchase becomes available
+                  This records the schedule on chain. The first purchase becomes available
                   immediately.
                 </p>
 
