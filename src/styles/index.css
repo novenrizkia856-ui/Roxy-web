@@ -92,13 +92,13 @@ body {
   /* A survey grid, not a texture. Two layers: a fine dot lattice and a wider ruled square, both
      barely above the ground, so the page reads as drawn on graph paper rather than decorated. */
   background-image:
-    radial-gradient(rgba(237, 233, 225, 0.055) 1px, transparent 1px),
-    linear-gradient(to right, rgba(237, 233, 225, 0.022) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(237, 233, 225, 0.022) 1px, transparent 1px);
+    radial-gradient(rgba(237, 233, 225, 0.11) 1px, transparent 1px),
+    linear-gradient(to right, rgba(237, 233, 225, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(237, 233, 225, 0.035) 1px, transparent 1px);
   background-size:
-    22px 22px,
-    132px 132px,
-    132px 132px;
+    20px 20px,
+    120px 120px,
+    120px 120px;
   background-attachment: fixed;
 }
 
@@ -141,6 +141,16 @@ h4 {
   text-transform: uppercase;
   letter-spacing: 0.08em;
   line-height: 1.12;
+}
+
+/* The hero statement. Monospace only reads as a headline when it is set heavy and tracked
+   wide - at 600 it reads as a caption that happens to be large. */
+.display-hero {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1.06;
 }
 
 /* Prose explicitly in the human voice, for places inside mono-heavy blocks. */
@@ -263,6 +273,27 @@ h4 {
   .choice[data-selected='true'] {
     border-color: var(--color-accent);
     background: var(--color-accent-wash);
+  }
+
+  /* Vertical rules marking the measure of the page. */
+  .railed {
+    position: relative;
+  }
+  .railed::before,
+  .railed::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--color-rule);
+    pointer-events: none;
+  }
+  .railed::before {
+    left: 0;
+  }
+  .railed::after {
+    right: 0;
   }
 
   /* Section marker: "SIGNAL — 02 / 05". The index is what turns a page into an instrument
