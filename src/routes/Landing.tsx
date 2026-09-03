@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom'
+import { LiveFeed } from '../components/LiveFeed'
 import { ProgressRing } from '../components/ProgressRing'
+import { Reveal } from '../components/Reveal'
 
 /** A still specimen of a plan row, used on the landing page to show the real thing. */
 function Specimen() {
@@ -8,7 +10,12 @@ function Specimen() {
       <div className="flex items-center justify-between border-b border-rule px-4 py-2.5">
         <span className="label">Plan 004</span>
         <span className="flex items-center gap-2">
-          <span className="pip" data-on="true" aria-hidden />
+          <span
+            className="pip"
+            data-on="true"
+            style={{ '--pulse': '1.7s' } as React.CSSProperties}
+            aria-hidden
+          />
           <span className="label !text-positive">Active</span>
         </span>
       </div>
@@ -56,15 +63,25 @@ function Marker({ name, index, of }: { name: string; index: number; of: number }
   )
 }
 
-function Step({ n, title, children }: { n: string; title: string; children: React.ReactNode }) {
+function Step({
+  n,
+  title,
+  delay = 0,
+  children,
+}: {
+  n: string
+  title: string
+  delay?: number
+  children: React.ReactNode
+}) {
   return (
-    <div className="border-t border-rule pt-4">
+    <Reveal delay={delay} className="border-t border-rule pt-4">
       <div className="flex items-baseline gap-3">
         <span className="numeric text-[0.72rem] text-accent">{n}</span>
         <h3 className="display text-[0.95rem]">{title}</h3>
       </div>
       <p className="mt-2.5 text-[0.95rem] leading-relaxed text-ink-soft">{children}</p>
-    </div>
+    </Reveal>
   )
 }
 
@@ -132,8 +149,9 @@ export function Landing() {
           { k: 'Held by Roxy', v: '0.00', n: 'Between transactions, always' },
           { k: 'Cancel anytime', v: 'Yours', n: 'Only you can end your plan' },
         ].map((item, i) => (
-          <div
+          <Reveal
             key={item.k}
+            delay={i * 70}
             className={`px-4 py-6 sm:px-5 ${i < 3 ? 'sm:border-r sm:border-rule' : ''} ${
               i % 2 === 0 ? 'border-r border-rule sm:border-r' : ''
             } ${i < 2 ? 'border-b border-rule sm:border-b-0' : ''}`}
@@ -141,13 +159,32 @@ export function Landing() {
             <p className="label">{item.k}</p>
             <p className="numeric mt-2 text-[1.5rem] leading-none">{item.v}</p>
             <p className="mt-2 text-[0.82rem] leading-snug text-ink-muted">{item.n}</p>
-          </div>
+          </Reveal>
         ))}
       </section>
 
-      {/* ---- How it works: staggered, not a three-up card grid ---- */}
+      {/* ---- Signal: what the protocol has actually done, not a mock ---- */}
       <section className="py-20">
-        <Marker name="Process" index={1} of={2} />
+        <Marker name="Signal" index={1} of={3} />
+
+        <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-12">
+          <Reveal className="lg:col-span-4">
+            <h2 className="display text-[1.25rem]">Purchases that do not wait for you</h2>
+            <p className="prose-serif mt-4 max-w-sm text-[0.95rem] leading-relaxed text-ink-soft">
+              Every execution the contract has ever made, read straight from its own event log.
+              Not a mock-up — if this list is empty, nothing has run yet, and it says so.
+            </p>
+          </Reveal>
+
+          <Reveal delay={90} className="lg:col-span-7 lg:col-start-6">
+            <LiveFeed />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ---- How it works: staggered, not a three-up card grid ---- */}
+      <section className="border-t border-rule py-20">
+        <Marker name="Process" index={2} of={3} />
 
         <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-12">
           <div className="lg:col-span-4">
@@ -159,19 +196,19 @@ export function Landing() {
           </div>
 
           <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:col-span-7 lg:col-start-6">
-            <Step n="01" title="Approve once">
+            <Step n="01" delay={0} title="Approve once">
               Give the contract permission to spend your stablecoin. This is a normal ERC-20
               approval and you can revoke it whenever you like.
             </Step>
-            <Step n="02" title="Set the terms">
+            <Step n="02" delay={70} title="Set the terms">
               Choose the asset, the amount per cycle, how often, and the most slippage you will
               accept. All four are stored on-chain against your address.
             </Step>
-            <Step n="03" title="It executes">
+            <Step n="03" delay={140} title="It executes">
               When the interval elapses, anyone may call the plan. The contract pulls exactly one
               cycle, swaps it on Uniswap, and sends the tokens to you.
             </Step>
-            <Step n="04" title="Or it doesn't">
+            <Step n="04" delay={210} title="Or it doesn't">
               If the price feed is stale or the pool has moved past your slippage, the whole
               transaction reverts. Nothing half-happens.
             </Step>
@@ -181,15 +218,15 @@ export function Landing() {
 
       {/* ---- Custody: the claim that matters most, given its own space ---- */}
       <section className="border-t border-rule py-20">
-        <Marker name="Custody" index={2} of={2} />
+        <Marker name="Custody" index={3} of={3} />
 
         <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-12">
-          <div className="lg:col-span-5">
+          <Reveal className="lg:col-span-5">
             <blockquote className="prose-serif border-l-2 border-accent pl-5 text-[1.4rem] leading-snug">
               Every purchase is one transaction: pull, swap, deliver. If any part fails, none of
               it happened.
             </blockquote>
-          </div>
+          </Reveal>
 
           <div className="prose-serif space-y-5 text-[0.95rem] leading-relaxed text-ink-soft lg:col-span-6 lg:col-start-7">
             <p>
