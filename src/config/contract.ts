@@ -72,7 +72,5 @@ export const erc20Abi = [
 export const MIN_INTERVAL_SECONDS = 3600 // 1 hour
 export const MAX_SLIPPAGE_BPS = 3000 // 30%
 
-/** Below roughly 0.75% the live pool's fee-plus-spread eats the whole tolerance and executions
- *  start failing. Measured on a real fork run; see recur-contracts/AUDIT.md section 6. */
-export const RECOMMENDED_MIN_SLIPPAGE_BPS = 75
-export const DEFAULT_SLIPPAGE_BPS = 100
+// Slippage floors and defaults are per asset now, not global: they depend on which Uniswap fee
+// tier that asset's pool actually sits on. See `minSlippageBps` in config/tokens.ts.

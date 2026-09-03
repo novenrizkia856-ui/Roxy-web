@@ -6,11 +6,9 @@ import { useAccount, useWaitForTransactionReceipt, useWriteContract } from 'wagm
 import { TxStatus, type TxPhase } from '../components/TxStatus'
 import { WalletButton } from '../components/WalletButton'
 import {
-  DEFAULT_SLIPPAGE_BPS,
   erc20Abi,
   isDeployed,
   MAX_SLIPPAGE_BPS,
-  RECOMMENDED_MIN_SLIPPAGE_BPS,
   RECUR_ADDRESS,
   recurAbi,
 } from '../config/contract'
@@ -75,7 +73,7 @@ export function CreatePlan() {
   const [asset, setAsset] = useState<StockTokenMeta | undefined>(STOCK_TOKENS[0])
   const [amount, setAmount] = useState('100')
   const [intervalSeconds, setIntervalSeconds] = useState(604800)
-  const [slippageBps, setSlippageBps] = useState(DEFAULT_SLIPPAGE_BPS)
+  const [slippageBps, setSlippageBps] = useState(STOCK_TOKENS[0]?.defaultSlippageBps ?? 100)
   const [cyclesToApprove, setCyclesToApprove] = useState(12)
   const [unlimited, setUnlimited] = useState(false)
 
@@ -192,7 +190,13 @@ export function CreatePlan() {
                     key={t.address}
                     type="button"
                     data-selected={asset?.address === t.address}
-                    onClick={() => setAsset(t)}
+                    onClick={() => {
+                      setAsset(t)
+                      // Each asset carries its own floor, because the fee tier its pool sits on
+                      // differs. Carrying a tolerance from a 0.05% pool over to a 0.30% one is
+                      // how a plan ends up reverting on every execution.
+                      setSlippageBps(t.defaultSlippageBps)
+                    }}
                     className="choice block w-full"
                   >
                     <span className="flex items-baseline gap-2">
@@ -201,6 +205,9 @@ export function CreatePlan() {
                       {tokenCfg.enabled && asset?.address === t.address && (
                         <span className="label ml-auto !text-positive">Registered</span>
                       )}
+                    </span>
+                    <span className="numeric mt-1 block text-[0.7rem] text-ink-faint">
+                      Pool tier {t.poolFee === 3000 ? '0.30%' : '0.05%'}
                     </span>
                     <span className="mt-1 block text-[0.85rem] leading-snug text-ink-muted">
                       {t.note}
@@ -330,11 +337,12 @@ export function CreatePlan() {
                 ))}
               </div>
 
-              {slippageBps < RECOMMENDED_MIN_SLIPPAGE_BPS && (
+              {asset && slippageBps < asset.minSlippageBps && (
                 <p className="mt-4 max-w-lg rounded-xs border border-caution/40 bg-caution-wash px-3.5 py-3 text-[0.88rem] leading-relaxed text-ink-soft">
-                  Below about {formatBps(RECOMMENDED_MIN_SLIPPAGE_BPS)} the pool fee and spread
-                  alone will usually breach the floor, so most executions would simply revert. On
-                  a live measurement the round trip cost roughly 0.48%.
+                  Too tight for {asset.symbol}. Its pool sits on the{' '}
+                  {asset.poolFee === 3000 ? '0.30%' : '0.05%'} tier, so the fee and spread alone
+                  would breach this floor and most executions would simply revert. Allow at least{' '}
+                  {formatBps(asset.minSlippageBps)}.
                 </p>
               )}
               {slippageBps > 500 && (
