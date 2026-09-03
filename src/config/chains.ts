@@ -11,18 +11,12 @@ import { defineChain } from 'viem'
  * It is an Arbitrum Orbit L2 and pays gas in ETH.
  */
 
-function requireEnv(name: string, value: string | undefined): string {
-  if (!value) {
-    throw new Error(
-      `Missing ${name}. Copy .env.example to .env and fill it in (or set it in the Vercel project settings).`,
-    )
-  }
-  return value
-}
-
 export const CHAIN_ID = Number(import.meta.env.VITE_CHAIN_ID ?? 4663)
 
-export const RPC_URL = requireEnv('VITE_RPC_URL', import.meta.env.VITE_RPC_URL)
+// Fall back to the public mainnet RPC when the env var is absent, so a deploy that has not had
+// its environment variables filled in still boots instead of throwing before React mounts (a
+// missing value used to blank the screen). Set VITE_RPC_URL to override.
+export const RPC_URL = import.meta.env.VITE_RPC_URL ?? 'https://rpc.mainnet.chain.robinhood.com'
 
 export const EXPLORER_URL = (
   import.meta.env.VITE_BLOCK_EXPLORER_URL ?? 'https://robinhoodchain.blockscout.com'
