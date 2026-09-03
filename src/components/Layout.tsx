@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { NavLink, Outlet, Link } from 'react-router-dom'
-import { CHAIN_ID } from '../config/chains'
-import { isDeployed } from '../config/contract'
+import { CHAIN_ID, explorerAddress } from '../config/chains'
+import { isDeployed, RECUR_ADDRESS } from '../config/contract'
 import { IS_TESTNET } from '../config/tokens'
 import { WalletButton } from './WalletButton'
 
@@ -24,9 +24,9 @@ function Mark() {
 /**
  * UTC clock in the system bar.
  *
- * Not ornament. Every plan in Recur is a deadline, every countdown on these pages is measured
- * against a wall clock, and "when is it due" is the product's only real question - so the
- * interface states which clock it is answering with.
+ * Not ornament. Every plan is a deadline, every countdown on these pages is measured against a
+ * wall clock, and "when is it due" is the product's only real question - so the interface states
+ * which clock it is answering with.
  */
 function Clock() {
   const [t, setT] = useState(() => new Date())
@@ -51,14 +51,15 @@ function navClass({ isActive }: { isActive: boolean }) {
 export function Layout() {
   return (
     <div className="flex min-h-dvh flex-col">
-      {/* System bar: what network, what state, what time. The interface says where it stands
-          before it says anything else. */}
+      {/* System bar: what network, what contract, what state, what time. The interface says
+          where it stands before it says anything else - and that includes admitting that the
+          contract it drives does not carry this product's name. */}
       <div className="border-b border-rule">
         <div className="mx-auto flex max-w-6xl items-center gap-4 px-5 py-2 sm:px-8">
           <span className="label !text-ink-faint">//</span>
-          <span className="label">Recur.Protocol</span>
+          <span className="label">Roxy</span>
           <span className="label !text-ink-faint hidden sm:inline">
-            Net.Robinhood · {CHAIN_ID}
+            Contract.Recur · {CHAIN_ID}
           </span>
           {IS_TESTNET && <span className="label !text-caution">Testnet</span>}
           <div className="ml-auto flex items-center gap-3">
@@ -85,9 +86,9 @@ export function Layout() {
 
       <header className="border-b border-rule">
         <div className="mx-auto flex max-w-6xl items-center gap-6 px-5 py-4 sm:px-8">
-          <Link to="/" className="flex items-center gap-2.5" aria-label="Recur, home">
+          <Link to="/" className="flex items-center gap-2.5" aria-label="Roxy, home">
             <Mark />
-            <span className="display text-[1.15rem] leading-none tracking-[0.18em]">Recur</span>
+            <span className="display text-[1.15rem] leading-none tracking-[0.18em]">Roxy</span>
           </Link>
 
           <nav className="ml-auto flex items-center gap-5 sm:gap-7">
@@ -109,16 +110,40 @@ export function Layout() {
       </main>
 
       <footer className="mt-24 border-t border-rule">
-        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-8 sm:flex-row sm:items-start sm:justify-between sm:px-8">
-          <p className="max-w-md text-[0.85rem] leading-relaxed text-ink-muted">
-            Recur is non-custodial. Your funds stay in your wallet and pass through the contract
-            only during a single transaction. Nothing here is investment advice.
-          </p>
-          <div className="flex items-center gap-6">
-            <Link to="/legal" className="label hover:!text-ink">
-              Legal
-            </Link>
-            <span className="label !text-ink-faint">Robinhood Chain</span>
+        <div className="mx-auto max-w-6xl px-5 py-8 sm:px-8">
+          {/* Stated on every page, deliberately. Someone who checks the address they are about
+              to approve will find a contract called Recur, not Roxy. If this interface did not
+              say so plainly, that mismatch would look exactly like a spoofed front end. */}
+          <div className="border-b border-rule pb-5">
+            <p className="label">Contract identity</p>
+            <p className="prose-serif mt-2 max-w-2xl text-[0.9rem] leading-relaxed text-ink-soft">
+              Roxy is the interface. The contract it drives is named{' '}
+              <strong className="text-ink">Recur</strong> — that is the name you will see on the
+              block explorer and in your wallet. Same software, two names.
+            </p>
+            {isDeployed && RECUR_ADDRESS && (
+              <a
+                href={explorerAddress(RECUR_ADDRESS)}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="numeric mt-2 inline-block text-[0.78rem] text-ink-muted underline decoration-rule-strong underline-offset-2 hover:text-accent"
+              >
+                {RECUR_ADDRESS} ↗
+              </a>
+            )}
+          </div>
+
+          <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <p className="max-w-md text-[0.85rem] leading-relaxed text-ink-muted">
+              Roxy is non-custodial. Your funds stay in your wallet and pass through the contract
+              only during a single transaction. Nothing here is investment advice.
+            </p>
+            <div className="flex items-center gap-6">
+              <Link to="/legal" className="label hover:!text-ink">
+                Legal
+              </Link>
+              <span className="label !text-ink-faint">Robinhood Chain</span>
+            </div>
           </div>
         </div>
       </footer>

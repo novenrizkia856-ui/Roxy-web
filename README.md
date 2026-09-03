@@ -1,7 +1,27 @@
-# Recur — web
+# Roxy — web
 
-Front end for [Recur](../recur-contracts), a non-custodial DCA scheduler for Robinhood Chain
-Stock Tokens. Vite + React + wagmi, built to a **fully static** `dist/`.
+Front end for a non-custodial DCA scheduler for Robinhood Chain Stock Tokens. Vite + React +
+wagmi, built to a **fully static** `dist/`.
+
+## Naming: Roxy and Recur
+
+**The product is Roxy. The contract is [Recur](../recur-contracts).** Same software, two names:
+the contract was written, deployed and verified before the product was renamed, and a deployed
+contract cannot be renamed afterwards.
+
+This split is deliberate in the code as well:
+
+- **User-facing text says Roxy.** Headings, prose, the wordmark, the page title, the name the
+  wallet shows when connecting.
+- **Code identifiers say Recur**, because they refer to the contract, which really is called
+  that: `RECUR_ADDRESS`, `recurAbi`, `VITE_RECUR_CONTRACT_ADDRESS`, `abi/recur.json`.
+
+The mismatch is **stated to the user rather than hidden**, in three places: the system bar
+(`CONTRACT.RECUR`), the footer of every page (with the address and an explorer link), and the
+first clause of the Legal page. This is a trust requirement, not a cosmetic one — someone who
+checks the address before approving an allowance will find a contract that does not carry the
+product's name, and a front end that glossed over that would be indistinguishable from one
+impersonating a real protocol.
 
 ## Status
 

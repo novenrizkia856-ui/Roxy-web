@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom'
+import { explorerAddress } from '../config/chains'
+import { isDeployed, RECUR_ADDRESS } from '../config/contract'
 
 function Clause({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -23,16 +25,64 @@ export function Legal() {
         </h1>
       </div>
 
-      <Clause title="Recur is non-custodial">
+      {/* Deliberately first. Everything else on this page is easier to trust once the reader
+          knows why the contract they are about to approve carries a different name. */}
+      <Clause title="Roxy is the interface, Recur is the contract">
         <p>
-          Recur never takes deposits. Your stablecoin stays in your wallet until an execution
-          happens, and during that single transaction it is pulled, swapped and delivered to you.
-          The contract has no function that could withdraw or sweep user funds, and no
-          administrator can move them.
+          This product is called <strong>Roxy</strong>. The smart contract behind it is called{' '}
+          <strong>Recur</strong>. They are the same software under two names — the contract was
+          written, deployed and verified before the product was renamed, and a deployed contract
+          cannot be renamed afterwards.
         </p>
         <p>
-          The corollary is that there is nothing to recover from Recur if something goes wrong.
+          This matters to you for one practical reason: when you approve a token allowance, your
+          wallet and the block explorer will name the counterparty <strong>Recur</strong>, not
+          Roxy. That is expected. A front end that quietly hid this mismatch would be
+          indistinguishable from one impersonating a real protocol.
+        </p>
+        {isDeployed && RECUR_ADDRESS && (
+          <p>
+            Verify for yourself — this is the only address this interface will ever ask you to
+            approve:{' '}
+            <a
+              href={explorerAddress(RECUR_ADDRESS)}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="numeric text-[0.85rem] text-accent underline decoration-accent/30 underline-offset-4 hover:decoration-accent"
+            >
+              {RECUR_ADDRESS} ↗
+            </a>
+          </p>
+        )}
+      </Clause>
+
+      <Clause title="Roxy is non-custodial">
+        <p>
+          Roxy never takes deposits. Your stablecoin stays in your wallet until an execution
+          happens, and during that single transaction it is pulled, swapped and delivered to you.
+          The contract has no function that could withdraw or sweep user funds, and its own token
+          balance returns to zero after every transaction.
+        </p>
+        <p>
+          The corollary is that there is nothing to recover from Roxy if something goes wrong.
           There is no support desk, no reversal, and no insurance.
+        </p>
+      </Clause>
+
+      <Clause title="What the administrator can and cannot do">
+        <p>
+          The contract has an owner, currently a 2-of-3 multisig. The owner{' '}
+          <strong>cannot</strong> withdraw funds, cancel or alter your plan, or raise the fee
+          beyond a limit fixed in the code.
+        </p>
+        <p>
+          There is, however, an indirect path worth understanding. The owner chooses which price
+          feed each asset is valued against, and your slippage limit is measured against that
+          feed. An owner who substituted a dishonest feed could therefore allow a single cycle of
+          yours to fill at a bad price. Nothing beyond the amount of one cycle is at risk, and
+          only while your plan and allowance are both live — but it is the reason the owner is a
+          multisig rather than a single key, and the reason you should not leave a larger
+          allowance standing than you need.
         </p>
       </Clause>
 
@@ -64,9 +114,21 @@ export function Legal() {
         </p>
       </Clause>
 
+      <Clause title="Nobody is obliged to execute your plan">
+        <p>
+          Roxy has no keeper of its own. A plan that has come due sits waiting until someone —
+          anyone — calls it and pays the gas, earning the keeper's share of the fee. Usually that
+          is a bot; it can also be you.
+        </p>
+        <p>
+          So a purchase may happen late, or not at all. Do not treat a schedule here as a
+          guarantee that a trade will occur at a particular time.
+        </p>
+      </Clause>
+
       <Clause title="Stock Tokens are issued by a third party">
         <p>
-          Stock Tokens are issued and administered by Robinhood, not by Recur. They are
+          Stock Tokens are issued and administered by Robinhood, not by Roxy. They are
           upgradeable contracts: the issuer can change their behaviour, pause transfers, and burn
           balances. Corporate actions such as splits and dividends are handled by a multiplier the
           issuer controls.
@@ -91,10 +153,10 @@ export function Legal() {
 
       <Clause title="The contract has not been independently audited">
         <p>
-          Recur has been reviewed by its own authors and is covered by an automated test suite,
-          including tests that run against the live chain. That is not the same as an independent
-          audit, and it has not had one. Smart contracts can contain faults that testing does not
-          surface.
+          The contract has been reviewed by its own authors and is covered by an automated test
+          suite, including tests that run against the live chain. That is not the same as an
+          independent audit, and it has not had one. Smart contracts can contain faults that
+          testing does not surface.
         </p>
         <p>Use amounts you can afford to lose entirely.</p>
       </Clause>

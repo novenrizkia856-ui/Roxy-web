@@ -374,7 +374,7 @@ export function CreatePlan() {
                 {needsApproval ? (
                   <>
                     <p className="mt-2 max-w-lg text-[0.9rem] leading-relaxed text-ink-soft">
-                      Recur can only move {symbol} you have explicitly allowed. Approving a batch
+                      The Recur contract can only move {symbol} you have explicitly allowed. Approving a batch
                       of cycles means you are not signing a transaction every time.
                     </p>
 

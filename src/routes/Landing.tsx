@@ -88,7 +88,7 @@ export function Landing() {
 
           {/* Human voice: every sentence of prose stays in the serif. */}
           <p className="prose-serif mt-7 max-w-xl text-[1.05rem] leading-relaxed text-ink-soft">
-            Recur schedules recurring purchases of Stock Tokens. You approve your stablecoin once
+            Roxy schedules recurring purchases of Stock Tokens. You approve your stablecoin once
             and set the terms. When a plan comes due, anyone can trigger it — and they are paid a
             small tip for the gas. Your money never sits in the contract.
           </p>
@@ -101,6 +101,19 @@ export function Landing() {
               View my plans
             </Link>
           </div>
+
+          <p className="prose-serif mt-7 max-w-xl text-[0.85rem] leading-relaxed text-ink-faint">
+            Roxy is the interface. The contract it drives is named{' '}
+            <span className="text-ink-muted">Recur</span> — that is the name your wallet and the
+            block explorer will show you.{' '}
+            <Link
+              to="/legal"
+              className="underline decoration-rule-strong underline-offset-2 hover:text-accent"
+            >
+              Why the two names
+            </Link>
+            .
+          </p>
         </div>
 
         <div className="rise lg:col-span-5 lg:pt-12" style={{ animationDelay: '90ms' }}>
@@ -116,7 +129,7 @@ export function Landing() {
         {[
           { k: 'Protocol fee', v: '0.50%', n: 'Capped at 0.75% in code' },
           { k: 'Shortest interval', v: '1 hour', n: 'You choose the cadence' },
-          { k: 'Held by Recur', v: '0.00', n: 'Between transactions, always' },
+          { k: 'Held by Roxy', v: '0.00', n: 'Between transactions, always' },
           { k: 'Cancel anytime', v: 'Yours', n: 'Only you can end your plan' },
         ].map((item, i) => (
           <div
@@ -180,7 +193,7 @@ export function Landing() {
 
           <div className="prose-serif space-y-5 text-[0.95rem] leading-relaxed text-ink-soft lg:col-span-6 lg:col-start-7">
             <p>
-              Recur holds no deposits. There is no balance to withdraw, because there is never a
+              Roxy holds no deposits. There is no balance to withdraw, because there is never a
               balance — the contract has no function that could sweep one, and its token balance
               returning to zero after every transaction is enforced by an automated test that runs
               thousands of random sequences.

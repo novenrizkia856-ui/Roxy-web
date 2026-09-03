@@ -11,8 +11,8 @@ import { robinhoodChain, RPC_URL } from './chains'
 const walletConnectProjectId = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID ?? ''
 
 export const wagmiConfig = getDefaultConfig({
-  appName: 'Recur',
-  appDescription: 'Scheduled, non-custodial purchases of Robinhood Chain Stock Tokens.',
+  appName: 'Roxy',
+  appDescription: 'Roxy - scheduled, non-custodial purchases of Robinhood Chain Stock Tokens. Contract: Recur.',
   projectId: walletConnectProjectId || 'recur-local-development',
   chains: [robinhoodChain],
   transports: {
