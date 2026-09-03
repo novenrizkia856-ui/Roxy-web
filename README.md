@@ -29,7 +29,7 @@ impersonating a real protocol.
 |---|---|
 | Build | ✅ `npm run build` produces a static `dist/` — no Node runtime needed to serve it |
 | Typecheck | ✅ clean |
-| Screens | Landing · Dashboard · Create plan · Plan detail · Legal (+ wallet connect) |
+| Screens | Landing · Docs · Dashboard · Create plan · Plan detail · Legal |
 | Contract wired | ✅ mainnet, 0xE59a22e8536294f352f74df6B97b7eec5df9Abd2 |
 | Hosted | ✅ useroxy.app |
 
@@ -116,7 +116,8 @@ src/
     useExecutions.ts execution history from PlanExecuted logs
     useNow.ts        ticking clock for countdowns
   components/        Layout, WalletButton, ProgressRing, TxStatus
-  routes/            Landing, Dashboard, CreatePlan, PlanDetail, Legal
+  docs/              documentation content as data, plus its presentational elements
+  routes/            Landing, Docs, Dashboard, CreatePlan, PlanDetail, Legal
   styles/index.css   design tokens + component classes
 ```
 

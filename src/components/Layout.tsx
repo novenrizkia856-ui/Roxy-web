@@ -85,24 +85,53 @@ export function Layout() {
       )}
 
       <header className="border-b border-rule">
-        <div className="mx-auto flex max-w-6xl items-center gap-6 px-5 py-4 sm:px-8">
+        {/* On a phone the wordmark and the wallet share the first row, and the links get a row
+            of their own underneath. Squeezing four targets onto one 375px row makes all of them
+            hard to hit. */}
+        <div className="mx-auto flex max-w-6xl items-center gap-4 px-5 py-4 sm:px-8">
           <Link to="/" className="flex items-center gap-2.5" aria-label="Roxy, home">
             <Mark />
             <span className="display text-[1.15rem] leading-none tracking-[0.18em]">Roxy</span>
           </Link>
 
-          <nav className="ml-auto flex items-center gap-5 sm:gap-7">
+          <nav className="ml-auto hidden items-center gap-6 sm:flex">
             <NavLink to="/dashboard" className={navClass}>
               Plans
             </NavLink>
             <NavLink to="/create" className={navClass}>
               New plan
             </NavLink>
-            <div className="ml-1">
-              <WalletButton />
-            </div>
+            <NavLink to="/docs/overview" className={navClass}>
+              Docs
+            </NavLink>
           </nav>
+
+          <div className="ml-auto sm:ml-4">
+            <WalletButton />
+          </div>
         </div>
+
+        <nav className="flex items-stretch border-t border-rule sm:hidden">
+          {[
+            { to: '/dashboard', label: 'Plans' },
+            { to: '/create', label: 'New plan' },
+            { to: '/docs/overview', label: 'Docs' },
+          ].map((item, i) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              className={({ isActive }) =>
+                [
+                  'label flex-1 py-3 text-center transition-colors',
+                  i < 2 ? 'border-r border-rule' : '',
+                  isActive ? '!text-accent' : 'hover:!text-ink',
+                ].join(' ')
+              }
+            >
+              {item.label}
+            </NavLink>
+          ))}
+        </nav>
       </header>
 
       <main className="flex-1">
