@@ -3,59 +3,13 @@ import { Link } from 'react-router-dom'
 import { BalanceTrace } from '../components/BalanceTrace'
 import { CopyField } from '../components/CopyField'
 import { ExecutionFlow } from '../components/ExecutionFlow'
+import { HeroProduct } from '../components/HeroProduct'
 import { HeroStats } from '../components/HeroStats'
 import { LiveFeed } from '../components/LiveFeed'
-import { ProgressRing } from '../components/ProgressRing'
 import { Reveal } from '../components/Reveal'
+import { SignalField } from '../components/SignalField'
 import { explorerAddress } from '../config/chains'
 import { isDeployed, RECUR_ADDRESS } from '../config/contract'
-
-/** A still specimen of a plan row, used on the landing page to show the real thing. */
-function Specimen() {
-  return (
-    <div className="panel overflow-hidden">
-      <div className="flex items-center justify-between border-b border-rule px-4 py-2.5">
-        <span className="label">Plan 004</span>
-        <span className="flex items-center gap-2">
-          <span
-            className="pip"
-            data-on="true"
-            style={{ '--pulse': '1.7s' } as React.CSSProperties}
-            aria-hidden
-          />
-          <span className="label !text-positive">Active</span>
-        </span>
-      </div>
-
-      <div className="flex items-center gap-4 px-4 py-4">
-        <ProgressRing progress={0.72} label="72% through the current interval" />
-        <div className="min-w-0">
-          <p className="display text-[0.95rem] leading-tight">NVIDIA</p>
-          <p className="numeric text-[0.75rem] text-ink-muted">NVDA · every 7 days</p>
-        </div>
-        <div className="ml-auto text-right">
-          <p className="label">Next buy</p>
-          <p className="numeric text-[1.05rem] leading-tight">1d 22h</p>
-        </div>
-      </div>
-
-      <dl className="grid grid-cols-3 border-t border-rule">
-        <div className="border-r border-rule px-4 py-3">
-          <dt className="label">Per cycle</dt>
-          <dd className="numeric mt-0.5 text-[0.95rem]">250.00</dd>
-        </div>
-        <div className="border-r border-rule px-4 py-3">
-          <dt className="label">Invested</dt>
-          <dd className="numeric mt-0.5 text-[0.95rem]">3,000.00</dd>
-        </div>
-        <div className="px-4 py-3">
-          <dt className="label">Slippage</dt>
-          <dd className="numeric mt-0.5 text-[0.95rem]">1.00%</dd>
-        </div>
-      </dl>
-    </div>
-  )
-}
 
 /** Section marker: a name and its place in the sequence, so the page reads as an instrument
  *  panel rather than a scroll. */
@@ -162,11 +116,8 @@ export function Landing() {
               </div>
             </div>
 
-            <div className="lg:col-span-5 lg:pt-10">
-              <Specimen />
-              <p className="mt-3 text-[0.8rem] leading-relaxed text-ink-faint">
-                An illustration, not live data.
-              </p>
+            <div className="lg:col-span-5 lg:pt-6">
+              <HeroProduct />
             </div>
           </div>
         </div>
@@ -199,20 +150,24 @@ export function Landing() {
           ))}
         </section>
 
-        {/* ---- Signal: what the protocol has actually done, not a mock ---- */}
+        {/* ---- Signal: the field on the left is drawn from the registry, the feed on the
+             right from the event log. Both are readings, neither is decoration. ---- */}
         <section className="py-20">
           <Marker name="Signal" index={1} of={3} />
 
-          <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-12">
-            <Reveal className="lg:col-span-4">
-              <h2 className="display text-[1.25rem]">Purchases that do not wait for you</h2>
-              <p className="prose-serif mt-4 max-w-sm text-[0.95rem] leading-relaxed text-ink-soft">
-                Every execution the contract has made, read from its own event log. Not a
-                mock. If this list is empty, nothing has run yet, and it says so.
-              </p>
+          <div className="mt-8 flex items-baseline justify-between gap-6">
+            <h2 className="display max-w-md text-[1.25rem]">Purchases that do not wait for you</h2>
+            <p className="prose-serif hidden max-w-sm text-[0.9rem] leading-relaxed text-ink-soft lg:block">
+              Read from the chain, not a mock. If the feed is empty, nothing has run yet.
+            </p>
+          </div>
+
+          <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-12">
+            <Reveal className="lg:col-span-7">
+              <SignalField />
             </Reveal>
 
-            <Reveal delay={90} className="lg:col-span-7 lg:col-start-6">
+            <Reveal delay={90} className="lg:col-span-5">
               <LiveFeed />
             </Reveal>
           </div>

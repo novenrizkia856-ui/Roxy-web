@@ -1,15 +1,21 @@
+import type { CSSProperties } from 'react'
+
 /**
  * The contract's own token balance over time.
  *
  * @dev The custody claim is hard to feel from a sentence. Drawn, it is obvious: the line sits on
- *      zero, and the only departures are the instants a purchase passes through. Each spike
- *      returns to the baseline within the same transaction it left it.
+ *      zero, and the only departures are the instants a purchase passes through.
  *
- *      An SVG here rather than boxes, because the shape is the argument. It scales with the
- *      column, and the labels are set large enough to survive at 375px.
+ *      The trace plots itself on rather than fading in, because watching a line be drawn along
+ *      the baseline is what makes "it stays at zero" land. Each spike then pings once, marking
+ *      the moment a purchase went through, staggered so they read as separate events.
+ *
+ *      An SVG here rather than boxes, because the shape is the argument.
  */
+
+const SPIKES = [112, 294, 476]
+
 export function BalanceTrace() {
-  // Three executions. Narrow spikes, each landing back on the baseline immediately.
   const path = [
     'M0,72',
     'L104,72 L112,26 L120,72',
@@ -22,7 +28,15 @@ export function BalanceTrace() {
     <figure className="panel overflow-hidden">
       <figcaption className="flex items-center justify-between border-b border-rule px-4 py-2.5">
         <span className="label">Balance held by the contract</span>
-        <span className="label !text-positive">Zero</span>
+        <span className="flex items-center gap-2">
+          <span
+            className="pip"
+            data-on="true"
+            style={{ '--pulse': '2.9s' } as CSSProperties}
+            aria-hidden
+          />
+          <span className="label !text-positive">Zero</span>
+        </span>
       </figcaption>
 
       <div className="px-4 py-5">
@@ -32,7 +46,6 @@ export function BalanceTrace() {
           role="img"
           aria-label="The contract's token balance stays at zero, rising only for the instant each purchase passes through."
         >
-          {/* Baseline */}
           <line
             x1="0"
             y1="72"
@@ -42,17 +55,32 @@ export function BalanceTrace() {
             strokeWidth="1"
             strokeDasharray="3 4"
           />
-          {/* The trace */}
+
           <path
             d={path}
+            className="draw"
+            style={{ '--draw-length': 1400 } as CSSProperties}
             fill="none"
             stroke="var(--color-accent)"
             strokeWidth="2"
             strokeLinejoin="round"
           />
-          {/* Marks where each purchase happened */}
-          {[112, 294, 476].map((x) => (
-            <circle key={x} cx={x} cy="26" r="3" fill="var(--color-accent)" />
+
+          {SPIKES.map((x, i) => (
+            <g key={x}>
+              {/* The expanding ring marks the instant, the dot marks the place. */}
+              <circle
+                cx={x}
+                cy="26"
+                r="3"
+                fill="none"
+                stroke="var(--color-accent)"
+                strokeWidth="1.5"
+                className="ping"
+                style={{ '--ping-delay': `${0.9 + i * 0.8}s` } as CSSProperties}
+              />
+              <circle cx={x} cy="26" r="3" fill="var(--color-accent)" />
+            </g>
           ))}
 
           <text x="0" y="90" className="numeric" fontSize="11" fill="var(--color-ink-faint)">
