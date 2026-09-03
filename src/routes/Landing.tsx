@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom'
 
+import { BalanceTrace } from '../components/BalanceTrace'
 import { CopyField } from '../components/CopyField'
+import { ExecutionFlow } from '../components/ExecutionFlow'
 import { HeroStats } from '../components/HeroStats'
 import { LiveFeed } from '../components/LiveFeed'
 import { ProgressRing } from '../components/ProgressRing'
@@ -111,10 +113,9 @@ export function Landing() {
               </h1>
 
               {/* Human voice: every sentence of prose stays in the serif. */}
-              <p className="prose-serif mt-7 max-w-xl text-[1.02rem] leading-relaxed text-ink-soft">
-                Roxy schedules recurring purchases of Stock Tokens. You approve your stablecoin
-                once, then set the terms. When a plan comes due, anyone can trigger it. They earn
-                a small tip for the gas. Your money never sits in the contract.
+              <p className="prose-serif mt-7 max-w-lg text-[1.05rem] leading-relaxed text-ink-soft">
+                Pick a stock. Pick an amount. Pick how often. Roxy buys it on schedule, and your
+                money never sits in the contract.
               </p>
 
               {/* Two addresses, and they must never be confused for each other. A visitor who
@@ -217,7 +218,7 @@ export function Landing() {
           </div>
         </section>
 
-        {/* ---- How it works: staggered, not a three-up card grid ---- */}
+        {/* ---- Process: the diagram does the explaining, the steps are labels ---- */}
         <section className="border-t border-rule py-20">
           <Marker name="Process" index={2} of={3} />
 
@@ -225,68 +226,58 @@ export function Landing() {
             <div className="lg:col-span-4">
               <h2 className="display text-[1.25rem]">Three steps, then it runs itself</h2>
               <p className="prose-serif mt-4 max-w-sm text-[0.95rem] leading-relaxed text-ink-soft">
-                There is no subscription and no account. The schedule lives in a contract you
-                can read. You can revoke it at any moment.
+                No subscription. No account. Revoke it whenever you like.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:col-span-7 lg:col-start-6">
-              <Step n="01" delay={0} title="Approve once">
-                Give the contract permission to spend your stablecoin. It is a normal ERC20
-                approval. You can revoke it whenever you like.
-              </Step>
-              <Step n="02" delay={70} title="Set the terms">
-                Choose the asset, the amount per cycle, how often, and the most slippage you
-                will accept. All four are stored on chain against your address.
-              </Step>
-              <Step n="03" delay={140} title="It executes">
-                When the interval elapses, anyone may call the plan. The contract pulls one
-                cycle, swaps it on Uniswap, then sends the tokens to you.
-              </Step>
-              <Step n="04" delay={210} title="Or it doesn't">
-                If the price feed is stale, or the pool has moved past your slippage, the whole
-                transaction reverts. Nothing half happens.
-              </Step>
-            </div>
+            <Reveal delay={80} className="lg:col-span-7 lg:col-start-6">
+              <ExecutionFlow />
+            </Reveal>
+          </div>
+
+          <div className="mt-10 grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
+            <Step n="01" delay={0} title="Approve once">
+              One ERC20 approval, for as many cycles as you choose.
+            </Step>
+            <Step n="02" delay={70} title="Set the terms">
+              Asset, amount, how often, and the worst price you accept.
+            </Step>
+            <Step n="03" delay={140} title="It executes">
+              Anyone can trigger it. They earn a tip for the gas.
+            </Step>
+            <Step n="04" delay={210} title="Or it doesn't">
+              Stale price or a bad fill, and nothing happens at all.
+            </Step>
           </div>
         </section>
 
-        {/* ---- Custody: the claim that matters most, given its own space ---- */}
+        {/* ---- Custody: the claim is drawn rather than argued at length ---- */}
         <section className="border-t border-rule py-20">
           <Marker name="Custody" index={3} of={3} />
 
           <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-12">
             <Reveal className="lg:col-span-5">
-              <blockquote className="prose-serif border-l-2 border-accent pl-5 text-[1.4rem] leading-snug">
-                Every purchase is one transaction. Pull, swap, deliver. If any part fails, none
-                of it happened.
+              <blockquote className="prose-serif border-l-2 border-accent pl-5 text-[1.35rem] leading-snug">
+                Roxy holds no deposits. There is no balance to withdraw, because there is never a
+                balance.
               </blockquote>
-            </Reveal>
 
-            <div className="prose-serif space-y-5 text-[0.95rem] leading-relaxed text-ink-soft lg:col-span-6 lg:col-start-7">
-              <p>
-                Roxy holds no deposits. There is no balance to withdraw, because there is never
-                a balance. The contract has no function that could sweep one. Its token balance
-                returns to zero after every transaction, and an automated test proves that across
-                thousands of random sequences.
-              </p>
-              <p>
-                The bargain you accept is different. An active plan means a standing allowance.
-                It also means a purchase a stranger can trigger at a moment you did not pick.
-                Your slippage limit is what bounds that. It is checked against a Chainlink price
-                read in the same transaction, not against the pool price an attacker could
-                move.
-              </p>
-              <p>
+              <p className="prose-serif mt-6 max-w-sm text-[0.95rem] leading-relaxed text-ink-soft">
+                What you accept instead is a standing allowance, and a purchase a stranger can
+                trigger. Your slippage limit is what bounds that.{' '}
                 <Link
-                  to="/legal"
+                  to="/docs/security"
                   className="text-accent underline decoration-accent/30 underline-offset-4 hover:decoration-accent"
                 >
-                  Read the full disclosures
-                </Link>{' '}
-                before you create a plan.
+                  Read the security model
+                </Link>
+                .
               </p>
-            </div>
+            </Reveal>
+
+            <Reveal delay={90} className="lg:col-span-7 lg:col-start-6">
+              <BalanceTrace />
+            </Reveal>
           </div>
         </section>
       </div>
