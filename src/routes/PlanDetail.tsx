@@ -126,7 +126,7 @@ export function PlanDetail() {
         <div className="lg:col-span-4">
           <h2 className="display text-[1.15rem]">Position</h2>
           <p className="mt-2 max-w-xs text-[0.9rem] leading-relaxed text-ink-soft">
-            Totalled from on-chain execution events, net of the protocol fee.
+            Totalled from on chain execution events, net of the protocol fee.
           </p>
         </div>
 
@@ -134,14 +134,14 @@ export function PlanDetail() {
           <div>
             <dt className="label">Invested</dt>
             <dd className="numeric mt-1.5 text-[1.4rem] leading-none">
-              {executions ? formatAmount(invested, stableDecimals, 2) : '—'}
+              {executions ? formatAmount(invested, stableDecimals, 2) : '...'}
             </dd>
             <dd className="numeric mt-1 text-[0.72rem] text-ink-faint">{stableSymbol}</dd>
           </div>
           <div>
             <dt className="label">Received</dt>
             <dd className="numeric mt-1.5 text-[1.4rem] leading-none">
-              {executions ? formatAmount(received, stockDecimals, 4) : '—'}
+              {executions ? formatAmount(received, stockDecimals, 4) : '...'}
             </dd>
             <dd className="numeric mt-1 text-[0.72rem] text-ink-faint">
               {meta?.symbol ?? 'tokens'}
@@ -152,7 +152,7 @@ export function PlanDetail() {
             <dd className="numeric mt-1.5 text-[1.4rem] leading-none">
               {executions && received > 0n
                 ? effectivePrice(invested, stableDecimals, received, stockDecimals)
-                : '—'}
+                : '...'}
             </dd>
             <dd className="numeric mt-1 text-[0.72rem] text-ink-faint">per token</dd>
           </div>
@@ -168,15 +168,15 @@ export function PlanDetail() {
 
         {isError ? (
           <p className="mt-5 max-w-lg text-[0.9rem] leading-relaxed text-ink-muted">
-            History could not be loaded — this RPC limits log queries. The plan itself is
-            unaffected; you can read the full event history on the explorer.
+            History could not be loaded because this RPC limits log queries. The plan is
+            unaffected. You can read the full event history on the explorer.
           </p>
         ) : execLoading ? (
           <p className="numeric mt-5 text-[0.85rem] text-ink-muted">Reading events…</p>
         ) : !executions?.length ? (
           <p className="mt-5 max-w-lg text-[0.9rem] leading-relaxed text-ink-soft">
-            Nothing yet. The first purchase happens the moment someone executes this plan — you
-            can do it yourself, or wait for a keeper to pick it up.
+            Nothing yet. The first purchase happens the moment someone executes this plan.
+            You can do it yourself, or wait for a keeper.
           </p>
         ) : (
           <div className="mt-6 overflow-x-auto">

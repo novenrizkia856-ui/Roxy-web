@@ -101,12 +101,10 @@ export function Landing() {
         <div className={`${CONTAINER} railed flex flex-1 items-center`}>
           <div className="grid w-full grid-cols-1 gap-12 py-12 lg:grid-cols-12 lg:gap-10">
             <div className="lg:col-span-7">
-              <span className="marker">Non-custodial scheduler</span>
+              <span className="marker">Noncustodial scheduler</span>
 
               {/* Set heavy and large: at headline size a lighter monospace reads as a caption
                   rather than as a statement. */}
-              {/* No manual line breaks: they fight the natural wrap and produce a ragged extra
-                  line. A measure is set instead and the text is allowed to break where it fits. */}
               <h1 className="display-hero mt-6 max-w-[15ch] text-[1.9rem] sm:text-[2.4rem] lg:max-w-[16ch] lg:text-[3.15rem]">
                 Buy the same amount, on the same day,{' '}
                 <span className="text-accent">without being there.</span>
@@ -115,30 +113,43 @@ export function Landing() {
               {/* Human voice: every sentence of prose stays in the serif. */}
               <p className="prose-serif mt-7 max-w-xl text-[1.02rem] leading-relaxed text-ink-soft">
                 Roxy schedules recurring purchases of Stock Tokens. You approve your stablecoin
-                once and set the terms. When a plan comes due, anyone can trigger it — and they
-                are paid a small tip for the gas. Your money never sits in the contract.
+                once, then set the terms. When a plan comes due, anyone can trigger it. They earn
+                a small tip for the gas. Your money never sits in the contract.
               </p>
 
-              {isDeployed && RECUR_ADDRESS && (
-                <div className="mt-7 max-w-xl">
-                  <CopyField
-                    label="CA"
-                    value={RECUR_ADDRESS}
-                    href={explorerAddress(RECUR_ADDRESS)}
-                  />
-                  <p className="prose-serif mt-2.5 text-[0.8rem] leading-relaxed text-ink-faint">
-                    The contract is named <span className="text-ink-muted">Recur</span>, not Roxy
-                    — that is the name your wallet will show.{' '}
-                    <Link
-                      to="/legal"
-                      className="underline decoration-rule-strong underline-offset-2 hover:text-accent"
-                    >
-                      Why the two names
-                    </Link>
-                    .
+              {/* Two addresses, and they must never be confused for each other. A visitor who
+                  sees "CA" on a page like this assumes "token to buy", so each field states what
+                  it is and each caption states what it is not. */}
+              <div className="mt-7 max-w-xl space-y-4">
+                {isDeployed && RECUR_ADDRESS && (
+                  <div>
+                    <CopyField
+                      label="Contract / Recur"
+                      value={RECUR_ADDRESS}
+                      href={explorerAddress(RECUR_ADDRESS)}
+                    />
+                    <p className="prose-serif mt-2 text-[0.8rem] leading-relaxed text-ink-faint">
+                      The protocol contract. It is not a token. Never send funds to it. It is
+                      named Recur, not Roxy, so that is the name your wallet will show you.{' '}
+                      <Link
+                        to="/legal"
+                        className="underline decoration-rule-strong underline-offset-2 hover:text-accent"
+                      >
+                        Why the two names
+                      </Link>
+                      .
+                    </p>
+                  </div>
+                )}
+
+                <div>
+                  <CopyField label="Token / Roxy" placeholder="Coming soon" />
+                  <p className="prose-serif mt-2 text-[0.8rem] leading-relaxed text-ink-faint">
+                    No Roxy token exists yet. Any address claiming to be one is fake. This field
+                    will show the real address when there is one.
                   </p>
                 </div>
-              )}
+              </div>
 
               <div className="mt-8 flex flex-wrap items-center gap-3">
                 <Link to="/create" className="btn btn-primary">
@@ -195,8 +206,8 @@ export function Landing() {
             <Reveal className="lg:col-span-4">
               <h2 className="display text-[1.25rem]">Purchases that do not wait for you</h2>
               <p className="prose-serif mt-4 max-w-sm text-[0.95rem] leading-relaxed text-ink-soft">
-                Every execution the contract has ever made, read straight from its own event log.
-                Not a mock-up — if this list is empty, nothing has run yet, and it says so.
+                Every execution the contract has made, read from its own event log. Not a
+                mock. If this list is empty, nothing has run yet, and it says so.
               </p>
             </Reveal>
 
@@ -214,27 +225,27 @@ export function Landing() {
             <div className="lg:col-span-4">
               <h2 className="display text-[1.25rem]">Three steps, then it runs itself</h2>
               <p className="prose-serif mt-4 max-w-sm text-[0.95rem] leading-relaxed text-ink-soft">
-                There is no subscription and no account. The schedule lives in a contract you can
-                read, and you can revoke it at any moment.
+                There is no subscription and no account. The schedule lives in a contract you
+                can read. You can revoke it at any moment.
               </p>
             </div>
 
             <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:col-span-7 lg:col-start-6">
               <Step n="01" delay={0} title="Approve once">
-                Give the contract permission to spend your stablecoin. This is a normal ERC-20
-                approval and you can revoke it whenever you like.
+                Give the contract permission to spend your stablecoin. It is a normal ERC20
+                approval. You can revoke it whenever you like.
               </Step>
               <Step n="02" delay={70} title="Set the terms">
-                Choose the asset, the amount per cycle, how often, and the most slippage you will
-                accept. All four are stored on-chain against your address.
+                Choose the asset, the amount per cycle, how often, and the most slippage you
+                will accept. All four are stored on chain against your address.
               </Step>
               <Step n="03" delay={140} title="It executes">
-                When the interval elapses, anyone may call the plan. The contract pulls exactly
-                one cycle, swaps it on Uniswap, and sends the tokens to you.
+                When the interval elapses, anyone may call the plan. The contract pulls one
+                cycle, swaps it on Uniswap, then sends the tokens to you.
               </Step>
               <Step n="04" delay={210} title="Or it doesn't">
-                If the price feed is stale or the pool has moved past your slippage, the whole
-                transaction reverts. Nothing half-happens.
+                If the price feed is stale, or the pool has moved past your slippage, the whole
+                transaction reverts. Nothing half happens.
               </Step>
             </div>
           </div>
@@ -247,24 +258,24 @@ export function Landing() {
           <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-12">
             <Reveal className="lg:col-span-5">
               <blockquote className="prose-serif border-l-2 border-accent pl-5 text-[1.4rem] leading-snug">
-                Every purchase is one transaction: pull, swap, deliver. If any part fails, none of
-                it happened.
+                Every purchase is one transaction. Pull, swap, deliver. If any part fails, none
+                of it happened.
               </blockquote>
             </Reveal>
 
             <div className="prose-serif space-y-5 text-[0.95rem] leading-relaxed text-ink-soft lg:col-span-6 lg:col-start-7">
               <p>
-                Roxy holds no deposits. There is no balance to withdraw, because there is never a
-                balance — the contract has no function that could sweep one, and its token
-                balance returning to zero after every transaction is enforced by an automated
-                test that runs thousands of random sequences.
+                Roxy holds no deposits. There is no balance to withdraw, because there is never
+                a balance. The contract has no function that could sweep one. Its token balance
+                returns to zero after every transaction, and an automated test proves that across
+                thousands of random sequences.
               </p>
               <p>
-                The trade-off you are accepting is different: an active plan means a standing
-                allowance, and a purchase that can be triggered by a stranger at a moment you did
-                not pick. The slippage limit you set is what bounds that, and it is checked
-                against a Chainlink price read in the same transaction — not the pool's own
-                price, which an attacker could move.
+                The bargain you accept is different. An active plan means a standing allowance.
+                It also means a purchase a stranger can trigger at a moment you did not pick.
+                Your slippage limit is what bounds that. It is checked against a Chainlink price
+                read in the same transaction, not against the pool price an attacker could
+                move.
               </p>
               <p>
                 <Link

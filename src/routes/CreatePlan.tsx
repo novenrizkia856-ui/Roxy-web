@@ -313,7 +313,7 @@ export function CreatePlan() {
               <p className="mt-2 max-w-lg text-[0.95rem] leading-relaxed text-ink-soft">
                 Each purchase is floored against a Chainlink price read in the same transaction.
                 If the pool cannot beat that floor, the execution reverts instead of filling badly
-                — which is also what limits how much value a sandwich attack could extract.
+                That is also what limits how much a sandwich attack could take.
               </p>
 
               <div className="mt-6 grid max-w-lg grid-cols-2 gap-2.5 sm:grid-cols-4">
@@ -340,7 +340,7 @@ export function CreatePlan() {
               {slippageBps > 500 && (
                 <p className="mt-4 max-w-lg rounded-xs border border-accent/40 bg-accent-wash px-3.5 py-3 text-[0.88rem] leading-relaxed text-ink-soft">
                   A tolerance this wide is the amount you are authorising a bad fill to cost you.
-                  Wider is not safer — it is the ceiling on what an attacker can take.
+                  Wider is not safer. It is the ceiling on what an attacker can take.
                 </p>
               )}
             </section>
@@ -409,7 +409,7 @@ export function CreatePlan() {
 
                     <p className="numeric mt-3 text-[0.78rem] text-ink-muted">
                       {unlimited
-                        ? 'Approving an unlimited allowance — revocable at any time.'
+                        ? 'Approving an unlimited allowance. Revocable at any time.'
                         : `Approving ${formatAmount(needed, decimals, 2)} ${symbol}, enough for ${cyclesToApprove} cycles.`}
                     </p>
 

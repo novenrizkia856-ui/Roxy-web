@@ -30,9 +30,9 @@ export function Legal() {
       <Clause title="Roxy is the interface, Recur is the contract">
         <p>
           This product is called <strong>Roxy</strong>. The smart contract behind it is called{' '}
-          <strong>Recur</strong>. They are the same software under two names — the contract was
-          written, deployed and verified before the product was renamed, and a deployed contract
-          cannot be renamed afterwards.
+          <strong>Recur</strong>. They are the same software under two names. The contract was
+          written, deployed and verified before the product was renamed. A deployed contract
+          cannot be renamed.
         </p>
         <p>
           This matters to you for one practical reason: when you approve a token allowance, your
@@ -42,7 +42,7 @@ export function Legal() {
         </p>
         {isDeployed && RECUR_ADDRESS && (
           <p>
-            Verify for yourself — this is the only address this interface will ever ask you to
+            Verify for yourself. This is the only address this interface will ever ask you to
             approve:{' '}
             <a
               href={explorerAddress(RECUR_ADDRESS)}
@@ -56,7 +56,7 @@ export function Legal() {
         )}
       </Clause>
 
-      <Clause title="Roxy is non-custodial">
+      <Clause title="Roxy is noncustodial">
         <p>
           Roxy never takes deposits. Your stablecoin stays in your wallet until an execution
           happens, and during that single transaction it is pulled, swapped and delivered to you.
@@ -71,7 +71,7 @@ export function Legal() {
 
       <Clause title="What the administrator can and cannot do">
         <p>
-          The contract has an owner, currently a 2-of-3 multisig. The owner{' '}
+          The contract has an owner, currently a 2 of 3 multisig. The owner{' '}
           <strong>cannot</strong> withdraw funds, cancel or alter your plan, or raise the fee
           beyond a limit fixed in the code.
         </p>
@@ -80,9 +80,9 @@ export function Legal() {
           feed each asset is valued against, and your slippage limit is measured against that
           feed. An owner who substituted a dishonest feed could therefore allow a single cycle of
           yours to fill at a bad price. Nothing beyond the amount of one cycle is at risk, and
-          only while your plan and allowance are both live — but it is the reason the owner is a
-          multisig rather than a single key, and the reason you should not leave a larger
-          allowance standing than you need.
+          only while your plan and allowance are both live. That is why the owner is a multisig
+          rather than a single key. It is also why you should not leave a larger allowance
+          standing than you need.
         </p>
       </Clause>
 
@@ -90,8 +90,8 @@ export function Legal() {
         <p>
           Creating a plan requires approving the contract to spend your stablecoin. While that
           approval and the plan are both live, <strong>anyone</strong> can trigger your purchase
-          once the interval has elapsed — that is how the protocol runs without a central keeper,
-          and the caller earns a small share of the fee for doing it.
+          once the interval has elapsed. That is how the protocol runs without a central
+          keeper. The caller earns a small share of the fee for doing it.
         </p>
         <p>
           You control this in two ways: cancel the plan, or revoke the token approval in your
@@ -104,8 +104,8 @@ export function Legal() {
           Each execution is floored against a Chainlink reference price read in the same
           transaction. If the pool cannot meet that floor, the transaction reverts and nothing
           moves. The slippage tolerance you choose is the maximum loss you are authorising
-          relative to that reference — including to an attacker who deliberately moves the pool
-          around your trade.
+          relative to that reference. That includes loss to an attacker who deliberately moves
+          the pool around your trade.
         </p>
         <p>
           Executions can also simply stop. If the price feed goes stale, if the issuer pauses the
@@ -116,9 +116,9 @@ export function Legal() {
 
       <Clause title="Nobody is obliged to execute your plan">
         <p>
-          Roxy has no keeper of its own. A plan that has come due sits waiting until someone —
-          anyone — calls it and pays the gas, earning the keeper's share of the fee. Usually that
-          is a bot; it can also be you.
+          Roxy has no keeper of its own. A plan that has come due sits waiting until someone
+          calls it and pays the gas. Anyone can. They earn the keeper share of the fee. Usually
+          that is a bot. It can also be you.
         </p>
         <p>
           So a purchase may happen late, or not at all. Do not treat a schedule here as a
@@ -138,15 +138,15 @@ export function Legal() {
             Issuance and eligibility are restricted by jurisdiction at the issuer level.
           </strong>{' '}
           Whether you may hold these instruments is determined by the issuer and by the law where
-          you live — not by this interface, which does not check and cannot advise. Satisfy
-          yourself that you are eligible before you use it.
+          you live. This interface does not check and cannot advise. Satisfy yourself that you
+          are eligible before you use it.
         </p>
       </Clause>
 
       <Clause title="This is not investment advice">
         <p>
-          Nothing in this interface is a recommendation to buy or sell anything. Dollar-cost
-          averaging is a scheduling method, not a strategy that protects against loss — a plan
+          Nothing in this interface is a recommendation to buy or sell anything. Dollar cost
+          averaging is a scheduling method, not a strategy that protects against loss. A plan
           that buys steadily into a falling asset loses steadily. You can lose money.
         </p>
       </Clause>

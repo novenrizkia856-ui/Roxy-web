@@ -96,7 +96,7 @@ function PlanRow({
         <div className="border-b border-rule px-4 py-3 sm:border-r sm:border-b-0 sm:px-5">
           <dt className="label">Invested so far</dt>
           <dd className="numeric mt-0.5 text-[0.95rem]">
-            {executions ? formatAmount(invested, stableDecimals, 2) : '—'}
+            {executions ? formatAmount(invested, stableDecimals, 2) : '...'}
           </dd>
         </div>
         <div className="border-r border-rule px-4 py-3 sm:px-5">
@@ -106,7 +106,7 @@ function PlanRow({
         <div className="flex items-center justify-between gap-2 px-4 py-3 sm:px-5">
           <div>
             <dt className="label">Executions</dt>
-            <dd className="numeric mt-0.5 text-[0.95rem]">{executions?.length ?? '—'}</dd>
+            <dd className="numeric mt-0.5 text-[0.95rem]">{executions?.length ?? '...'}</dd>
           </div>
           {plan.active && (
             <button
@@ -172,8 +172,8 @@ export function Dashboard() {
         <div className="mt-14 max-w-md">
           <h2 className="display text-[1.15rem] leading-snug">Connect to see your plans</h2>
           <p className="mt-3 text-[0.95rem] leading-relaxed text-ink-soft">
-            Plans are stored on-chain against your address. Connecting only reads them — nothing
-            is signed until you create or cancel one.
+            Plans are stored on chain against your address. Connecting only reads them.
+            Nothing is signed until you create or cancel one.
           </p>
           <div className="mt-6">
             <WalletButton />

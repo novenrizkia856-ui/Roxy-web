@@ -34,13 +34,13 @@ export function HeroStats() {
   const { invested } = totals(executions)
 
   const stats: { k: string; v: string }[] = [
-    { k: 'Plans', v: nextPlanId !== undefined ? String(nextPlanId) : '—' },
-    { k: 'Executions', v: executions ? String(executions.length) : '—' },
+    { k: 'Plans', v: nextPlanId !== undefined ? String(nextPlanId) : '...' },
+    { k: 'Executions', v: executions ? String(executions.length) : '...' },
     {
       k: `Invested (${symbol})`,
-      v: executions ? formatAmount(invested, decimals, 2) : '—',
+      v: executions ? formatAmount(invested, decimals, 2) : '...',
     },
-    { k: 'Fee', v: feeBps !== undefined ? `${Number(feeBps) / 100}%` : '—' },
+    { k: 'Fee', v: feeBps !== undefined ? `${Number(feeBps) / 100}%` : '...' },
   ]
 
   return (

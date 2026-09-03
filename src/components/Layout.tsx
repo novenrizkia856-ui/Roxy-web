@@ -118,8 +118,8 @@ export function Layout() {
             <p className="label">Contract identity</p>
             <p className="prose-serif mt-2 max-w-2xl text-[0.9rem] leading-relaxed text-ink-soft">
               Roxy is the interface. The contract it drives is named{' '}
-              <strong className="text-ink">Recur</strong> — that is the name you will see on the
-              block explorer and in your wallet. Same software, two names.
+              <strong className="text-ink">Recur</strong>. That is the name you will see on
+              the block explorer and in your wallet. Same software, two names.
             </p>
             {isDeployed && RECUR_ADDRESS && (
               <a
@@ -135,8 +135,8 @@ export function Layout() {
 
           <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <p className="max-w-md text-[0.85rem] leading-relaxed text-ink-muted">
-              Roxy is non-custodial. Your funds stay in your wallet and pass through the contract
-              only during a single transaction. Nothing here is investment advice.
+              Roxy is noncustodial. Your funds stay in your wallet. They pass through the
+              contract only during a single transaction. Nothing here is investment advice.
             </p>
             <div className="flex items-center gap-6">
               <Link to="/legal" className="label hover:!text-ink">

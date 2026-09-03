@@ -2,20 +2,25 @@ import { useEffect, useState } from 'react'
 
 interface CopyFieldProps {
   label: string
-  value: string
-  /** Optional link, e.g. to the block explorer. */
+  /** Leave undefined for a value that does not exist yet. */
+  value?: string
+  /** Shown in place of the value when there is none. */
+  placeholder?: string
   href?: string
 }
 
 /**
- * A boxed, monospace value with a copy button.
+ * A boxed monospace value with a copy button.
  *
- * @dev Used in the hero for the contract address. Putting it there rather than only in the
- *      footer is deliberate: the product is called Roxy and the contract is called Recur, so the
- *      address is the one thing that lets a visitor resolve that mismatch for themselves without
- *      hunting for it.
+ * @dev Two of these sit in the hero: the protocol contract, and the project token. They must
+ *      never be confusable. A visitor who reads "CA" on a DeFi page tends to assume "token to
+ *      buy", so the labels name what each address actually is, and the caption under each one
+ *      says what it is not.
+ *
+ *      With no `value` the field renders a placeholder and drops the copy button, so there is
+ *      nothing to copy by mistake.
  */
-export function CopyField({ label, value, href }: CopyFieldProps) {
+export function CopyField({ label, value, placeholder, href }: CopyFieldProps) {
   const [copied, setCopied] = useState(false)
 
   useEffect(() => {
@@ -25,12 +30,13 @@ export function CopyField({ label, value, href }: CopyFieldProps) {
   }, [copied])
 
   async function copy() {
+    if (!value) return
     try {
       await navigator.clipboard.writeText(value)
       setCopied(true)
     } catch {
-      // Clipboard can be blocked (insecure context, permissions). Selecting the text is the
-      // fallback - the value stays readable either way, so this is not worth an error state.
+      // Clipboard can be blocked by permissions or an insecure context. The value stays
+      // selectable either way, so this does not need an error state.
       setCopied(false)
     }
   }
@@ -42,7 +48,11 @@ export function CopyField({ label, value, href }: CopyFieldProps) {
       </span>
 
       <span className="min-w-0 flex-1 overflow-x-auto px-3 py-2.5">
-        {href ? (
+        {!value ? (
+          <span className="numeric text-[0.78rem] whitespace-nowrap text-ink-faint">
+            {placeholder ?? 'Coming soon'}
+          </span>
+        ) : href ? (
           <a
             href={href}
             target="_blank"
@@ -56,14 +66,16 @@ export function CopyField({ label, value, href }: CopyFieldProps) {
         )}
       </span>
 
-      <button
-        type="button"
-        onClick={copy}
-        className="label shrink-0 border-l border-rule-strong px-3 transition-colors hover:!text-accent"
-        aria-label={`Copy ${label}`}
-      >
-        {copied ? 'Copied' : 'Copy'}
-      </button>
+      {value && (
+        <button
+          type="button"
+          onClick={copy}
+          className="label shrink-0 border-l border-rule-strong px-3 transition-colors hover:!text-accent"
+          aria-label={`Copy ${label}`}
+        >
+          {copied ? 'Copied' : 'Copy'}
+        </button>
+      )}
     </div>
   )
 }

@@ -30,8 +30,8 @@ impersonating a real protocol.
 | Build | ✅ `npm run build` produces a static `dist/` — no Node runtime needed to serve it |
 | Typecheck | ✅ clean |
 | Screens | Landing · Dashboard · Create plan · Plan detail · Legal (+ wallet connect) |
-| Contract wired | ✅ verified against the testnet deployment; runs read-only if no address is set |
-| Hosted | ❌ not deployed to Vercel yet |
+| Contract wired | ✅ mainnet, 0xE59a22e8536294f352f74df6B97b7eec5df9Abd2 |
+| Hosted | ✅ useroxy.app |
 
 ## Quick start
 

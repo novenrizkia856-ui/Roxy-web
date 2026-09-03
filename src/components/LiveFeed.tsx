@@ -32,13 +32,13 @@ export function LiveFeed() {
           <span className="label">Execution feed</span>
         </span>
         <span className="label !text-ink-faint">
-          {executions ? `${executions.length} total` : '—'}
+          {executions ? `${executions.length} total` : '...'}
         </span>
       </div>
 
       {!isDeployed || isError ? (
         <p className="px-4 py-6 text-[0.88rem] leading-relaxed text-ink-muted">
-          The feed is unavailable — this RPC limits log queries. Plans themselves are unaffected.
+          The feed is unavailable because this RPC limits log queries. Plans are unaffected.
         </p>
       ) : isLoading ? (
         <ul>
@@ -53,8 +53,8 @@ export function LiveFeed() {
       ) : recent.length === 0 ? (
         <div className="px-4 py-6">
           <p className="prose-serif text-[0.9rem] leading-relaxed text-ink-soft">
-            Nothing has executed yet. The first plan to come due will appear here — and anyone
-            can be the one to trigger it.
+            Nothing has executed yet. The first plan to come due will appear here. Anyone can
+            be the one to trigger it.
           </p>
           <Link to="/create" className="btn btn-ghost mt-4">
             Create the first plan
