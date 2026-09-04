@@ -548,14 +548,36 @@ FeeUpdated(oldBps, newBps)`}</Pre>
         heading: 'Registered assets',
         body: (
           <>
+            <p>
+              Nine assets are registered. The pool tier is the Uniswap fee tier each swap routes
+              through. It was measured against the live pools rather than assumed, because
+              registering an asset on the wrong tier passes validation and then reverts on every
+              execution.
+            </p>
+            <p className="mt-6 text-[0.82rem] text-ink-muted">Deep pools, 0.05 percent tier</p>
             <Fields
               rows={[
-                ['NVDA', '0xd0601CE157Db5bdC3162BbaC2a2C8aF5320D9EEC, pool tier 0.05 percent'],
+                ['NVDA', '0xd0601CE157Db5bdC3162BbaC2a2C8aF5320D9EEC, about 0.13 percent above oracle'],
+                ['QQQ', '0xD5f3879160bc7c32ebb4dC785F8a4F505888de68, about 0.19 percent above oracle'],
+                ['GOOGL', '0x2e0847E8910a9732eB3fb1bb4b70a580ADAD4FE3, within 0.01 percent of oracle'],
+                ['AAPL', '0xaF3D76f1834A1d425780943C99Ea8A608f8a93f9, currently prices slightly below oracle'],
+                ['SPY', '0x117cc2133c37B721F49dE2A7a74833232B3B4C0C, about 0.25 percent above oracle'],
+              ]}
+            />
+            <p className="mt-6 text-[0.82rem] text-ink-muted">
+              Only liquid on the 0.30 percent tier, so they need a wider slippage limit
+            </p>
+            <Fields
+              rows={[
+                ['MSFT', '0xe93237C50D904957Cf27E7B1133b510C669c2e74, about 0.23 percent above oracle'],
+                ['AMZN', '0x12f190a9F9d7D37a250758b26824B97CE941bF54, about 0.38 percent above oracle'],
+                ['META', '0xc0D6457C16Cc70d6790Dd43521C899C87ce02f35, about 0.62 percent above oracle'],
+                ['TSLA', '0x322F0929c4625eD5bAd873c95208D54E1c003b2d, about 0.73 percent above oracle'],
               ]}
             />
             <p className="mt-4">
-              More assets require both a liquid pool and an owner transaction to register. A feed
-              exists for many more tickers, but a thin pool makes a plan worse than no plan.
+              Further assets require both a liquid pool and an owner transaction to register. A
+              feed exists for many more tickers, but a thin pool makes a plan worse than no plan.
             </p>
           </>
         ),
