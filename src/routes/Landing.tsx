@@ -70,17 +70,12 @@ export function Landing() {
                 money never sits in the contract.
               </p>
 
-              {/* A visitor who sees "CA" on a page like this assumes "token to buy", so the one
-                  address in the hero is the token field, and it says plainly that no token
-                  exists. The contract address lives in the footer, on every page. */}
+              {/* The one address in the hero is the token, because a visitor who sees "CA" on a
+                  page like this is looking for a token. The placeholder carries the whole
+                  message until there is an address to put here. The contract address lives in
+                  the footer, on every page. */}
               <div className="mt-7 max-w-xl">
-                <div>
-                  <CopyField label="Token / Roxy" placeholder="Coming soon" />
-                  <p className="prose-serif mt-2 text-[0.8rem] leading-relaxed text-ink-faint">
-                    No Roxy token exists yet. Any address claiming to be one is fake. This field
-                    will show the real address when there is one.
-                  </p>
-                </div>
+                <CopyField label="Token / Roxy" placeholder="Coming soon" />
               </div>
 
               <div className="mt-8 flex flex-wrap items-center gap-3">

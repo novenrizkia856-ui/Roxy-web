@@ -12,32 +12,34 @@ interface CopyFieldProps {
 /**
  * A boxed monospace value with a copy button.
  *
- * @dev Two of these sit in the hero: the protocol contract, and the project token. They must
- *      never be confusable. A visitor who reads "CA" on a DeFi page tends to assume "token to
- *      buy", so the labels name what each address actually is, and the caption under each one
- *      says what it is not.
+ * @dev The button is rendered whether or not there is a value yet, so the field looks the same
+ *      the day an address is filled in as it does today, and nothing about the box shifts.
  *
- *      With no `value` the field renders a placeholder and drops the copy button, so there is
- *      nothing to copy by mistake.
+ *      Pressing it with nothing to copy flashes "Soon" rather than "Copied". Reporting a copy
+ *      that did not happen would send someone to their clipboard for an address that is not
+ *      there, which is worse than a button that admits it is waiting.
  */
 export function CopyField({ label, value, placeholder, href }: CopyFieldProps) {
-  const [copied, setCopied] = useState(false)
+  const [flash, setFlash] = useState<'copied' | 'empty' | null>(null)
 
   useEffect(() => {
-    if (!copied) return
-    const id = setTimeout(() => setCopied(false), 1600)
+    if (!flash) return
+    const id = setTimeout(() => setFlash(null), 1600)
     return () => clearTimeout(id)
-  }, [copied])
+  }, [flash])
 
   async function copy() {
-    if (!value) return
+    if (!value) {
+      setFlash('empty')
+      return
+    }
     try {
       await navigator.clipboard.writeText(value)
-      setCopied(true)
+      setFlash('copied')
     } catch {
       // Clipboard can be blocked by permissions or an insecure context. The value stays
       // selectable either way, so this does not need an error state.
-      setCopied(false)
+      setFlash(null)
     }
   }
 
@@ -66,16 +68,14 @@ export function CopyField({ label, value, placeholder, href }: CopyFieldProps) {
         )}
       </span>
 
-      {value && (
-        <button
-          type="button"
-          onClick={copy}
-          className="label shrink-0 border-l border-rule-strong px-3 transition-colors hover:!text-accent"
-          aria-label={`Copy ${label}`}
-        >
-          {copied ? 'Copied' : 'Copy'}
-        </button>
-      )}
+      <button
+        type="button"
+        onClick={copy}
+        className="label shrink-0 border-l border-rule-strong px-3 transition-colors hover:!text-accent"
+        aria-label={value ? `Copy ${label}` : `${label} is not available yet`}
+      >
+        {flash === 'copied' ? 'Copied' : flash === 'empty' ? 'Soon' : 'Copy'}
+      </button>
     </div>
   )
 }
