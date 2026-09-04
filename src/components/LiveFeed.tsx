@@ -56,7 +56,7 @@ export function LiveFeed() {
             Nothing has executed yet. The first plan to come due will appear here. Anyone can
             be the one to trigger it.
           </p>
-          <Link to="/create" className="btn btn-ghost mt-4">
+          <Link to="/create" className="btn btn-primary mt-4">
             Create the first plan
           </Link>
         </div>

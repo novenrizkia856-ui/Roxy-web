@@ -148,7 +148,14 @@ export function Layout() {
             <p className="prose-serif mt-2 max-w-2xl text-[0.9rem] leading-relaxed text-ink-soft">
               Roxy is the interface. The contract it drives is named{' '}
               <strong className="text-ink">Recur</strong>. That is the name you will see on
-              the block explorer and in your wallet. Same software, two names.
+              the block explorer and in your wallet. Same software, two names.{' '}
+              <Link
+                to="/legal"
+                className="underline decoration-rule-strong underline-offset-2 hover:text-accent"
+              >
+                Why the two names
+              </Link>
+              .
             </p>
             {isDeployed && RECUR_ADDRESS && (
               <a

@@ -1,14 +1,6 @@
 import { LatticeField } from './LatticeField'
 import { useProtocolStats } from '../lib/useProtocolStats'
 
-/** Compact money for the caption strip. */
-function compact(value: bigint, decimals: number): string {
-  const n = Number(value) / 10 ** decimals
-  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(2)}M`
-  if (n >= 1_000) return `${(n / 1_000).toFixed(1)}k`
-  return n.toFixed(0)
-}
-
 /**
  * The lattice, with the figures it is drawn from.
  *
@@ -42,10 +34,8 @@ export function SignalField() {
           <dd className="numeric mt-0.5 text-[1.1rem]">{s.assetsOffered}</dd>
         </div>
         <div className="px-4 py-3">
-          <dt className="label">Liquidity</dt>
-          <dd className="numeric mt-0.5 text-[1.1rem]">
-            {s.liquidity !== undefined ? compact(s.liquidity, s.decimals) : '...'}
-          </dd>
+          <dt className="label">Executions</dt>
+          <dd className="numeric mt-0.5 text-[1.1rem]">{s.executions ?? '...'}</dd>
         </div>
       </dl>
     </figure>

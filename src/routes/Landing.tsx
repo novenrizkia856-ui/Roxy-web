@@ -8,8 +8,6 @@ import { HeroStats } from '../components/HeroStats'
 import { LiveFeed } from '../components/LiveFeed'
 import { Reveal } from '../components/Reveal'
 import { SignalField } from '../components/SignalField'
-import { explorerAddress } from '../config/chains'
-import { isDeployed, RECUR_ADDRESS } from '../config/contract'
 
 /** Section marker: a name and its place in the sequence, so the page reads as an instrument
  *  panel rather than a scroll. */
@@ -72,31 +70,10 @@ export function Landing() {
                 money never sits in the contract.
               </p>
 
-              {/* Two addresses, and they must never be confused for each other. A visitor who
-                  sees "CA" on a page like this assumes "token to buy", so each field states what
-                  it is and each caption states what it is not. */}
-              <div className="mt-7 max-w-xl space-y-4">
-                {isDeployed && RECUR_ADDRESS && (
-                  <div>
-                    <CopyField
-                      label="Contract / Recur"
-                      value={RECUR_ADDRESS}
-                      href={explorerAddress(RECUR_ADDRESS)}
-                    />
-                    <p className="prose-serif mt-2 text-[0.8rem] leading-relaxed text-ink-faint">
-                      The protocol contract. It is not a token. Never send funds to it. It is
-                      named Recur, not Roxy, so that is the name your wallet will show you.{' '}
-                      <Link
-                        to="/legal"
-                        className="underline decoration-rule-strong underline-offset-2 hover:text-accent"
-                      >
-                        Why the two names
-                      </Link>
-                      .
-                    </p>
-                  </div>
-                )}
-
+              {/* A visitor who sees "CA" on a page like this assumes "token to buy", so the one
+                  address in the hero is the token field, and it says plainly that no token
+                  exists. The contract address lives in the footer, on every page. */}
+              <div className="mt-7 max-w-xl">
                 <div>
                   <CopyField label="Token / Roxy" placeholder="Coming soon" />
                   <p className="prose-serif mt-2 text-[0.8rem] leading-relaxed text-ink-faint">
