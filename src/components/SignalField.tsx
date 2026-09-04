@@ -1,3 +1,4 @@
+import { LIQUIDITY } from '../config/display'
 import { LatticeField } from './LatticeField'
 import { useProtocolStats } from '../lib/useProtocolStats'
 
@@ -34,8 +35,8 @@ export function SignalField() {
           <dd className="numeric mt-0.5 text-[1.1rem]">{s.assetsOffered}</dd>
         </div>
         <div className="px-4 py-3">
-          <dt className="label">Executions</dt>
-          <dd className="numeric mt-0.5 text-[1.1rem]">{s.executions ?? '...'}</dd>
+          <dt className="label">Liquidity</dt>
+          <dd className="numeric mt-0.5 text-[1.1rem]">{LIQUIDITY}</dd>
         </div>
       </dl>
     </figure>

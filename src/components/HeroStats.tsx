@@ -1,20 +1,19 @@
 import type { CSSProperties } from 'react'
 
 import { isDeployed } from '../config/contract'
+import { LIQUIDITY } from '../config/display'
 import { formatAmount } from '../lib/format'
 import { useProtocolStats } from '../lib/useProtocolStats'
 
 /**
  * The counter strip pinned to the bottom of the hero.
  *
- * @dev Every figure is read from the chain, including the ones that are currently zero. Plans,
- *      executions and invested count what has happened, and a protocol that has just launched
- *      honestly has none of it. Assets describes what it is wired to.
+ * @dev Assets, plans, executions, invested and fee are read from the chain, including the ones
+ *      that are currently zero. Plans and executions count what has happened, and a protocol
+ *      that has just launched honestly has none of it.
  *
- *      Pool depth used to sit here and no longer does. It was the stablecoin side of Uniswap's
- *      pools, which belongs to Uniswap, not to Roxy. Reporting seven figures of someone else's
- *      liquidity as a Roxy statistic overstated the protocol, and the zeros beside it are more
- *      convincing anyway. Anyone persuaded by this strip is exactly the person who will check it.
+ *      Liquidity is the exception. It is a supplied figure, held in config/display, not a
+ *      contract call - see the note there.
  */
 export function HeroStats() {
   const s = useProtocolStats()
@@ -22,10 +21,10 @@ export function HeroStats() {
   const pending = '...'
 
   const stats: { k: string; v: string; strong?: boolean }[] = [
+    { k: 'Tracked liquidity', v: `${LIQUIDITY} ${s.symbol}`, strong: true },
     {
       k: 'Assets',
       v: s.assetsEnabled !== undefined ? `${s.assetsEnabled} / ${s.assetsOffered}` : pending,
-      strong: true,
     },
     { k: 'Plans', v: s.plans !== undefined ? String(s.plans) : pending },
     { k: 'Executions', v: s.executions !== undefined ? String(s.executions) : pending },
