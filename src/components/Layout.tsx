@@ -4,20 +4,29 @@ import { CHAIN_ID, explorerAddress } from '../config/chains'
 import { isDeployed, RECUR_ADDRESS } from '../config/contract'
 import { IS_TESTNET } from '../config/tokens'
 import { WalletButton } from './WalletButton'
+import markUrl from '../assets/roxy-mark.png'
 
-/** The wordmark's dial glyph, echoing the progress rings used throughout the app. */
-function Mark() {
+/**
+ * The Roxy mark.
+ *
+ * @dev It stood in as a drawn dial until the real one existed. Four stacked slices, which is
+ *      what a plan is: the same purchase laid down again and again.
+ *
+ *      The type beside it stays in the interface's own monospace rather than the wordmark's
+ *      typeface. Every other word on these pages is set in two families, and a third one
+ *      appearing only in the corner would read as pasted on. The full lockup lives in
+ *      /brand for anywhere the brand is presented on its own.
+ */
+function Mark({ size = 20 }: { size?: number }) {
   return (
-    <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden className="shrink-0">
-      <circle cx="9" cy="9" r="7.5" fill="none" stroke="var(--color-rule-strong)" strokeWidth="1.5" />
-      <path
-        d="M9 1.5 A7.5 7.5 0 0 1 16.5 9"
-        fill="none"
-        stroke="var(--color-accent)"
-        strokeWidth="1.5"
-      />
-      <circle cx="9" cy="9" r="1.6" fill="var(--color-accent)" />
-    </svg>
+    <img
+      src={markUrl}
+      alt=""
+      width={Math.round(size * 0.904)}
+      height={size}
+      className="shrink-0"
+      aria-hidden
+    />
   )
 }
 
@@ -170,10 +179,13 @@ export function Layout() {
           </div>
 
           <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-            <p className="max-w-md text-[0.85rem] leading-relaxed text-ink-muted">
-              Roxy is noncustodial. Your funds stay in your wallet. They pass through the
-              contract only during a single transaction. Nothing here is investment advice.
-            </p>
+            <div className="flex max-w-md items-start gap-3">
+              <Mark size={22} />
+              <p className="text-[0.85rem] leading-relaxed text-ink-muted">
+                Roxy is noncustodial. Your funds stay in your wallet. They pass through the
+                contract only during a single transaction. Nothing here is investment advice.
+              </p>
+            </div>
             <div className="flex items-center gap-6">
               <Link to="/legal" className="label hover:!text-ink">
                 Legal
